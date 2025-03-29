@@ -13,6 +13,9 @@ import Login2 from "views/auth/Login2.js"; // login for admin
 import forget from "views/auth/forget";
 import Register from "views/auth/Register.js";
 
+
+
+
 export default function Auth() {
   return (
     <>
@@ -33,6 +36,8 @@ export default function Auth() {
           <Route path="/auth/Login2" exact component={Login2} />
           <Route path="/auth/forget" exact component={forget} />
           <Route path="/auth/register" exact component={Register} />
+  
+         
           
             <Redirect from="/auth" to="/auth/login" />
           </Switch>

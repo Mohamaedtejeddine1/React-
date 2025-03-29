@@ -39,14 +39,28 @@ export default function Login() {
 
       try {
         const response = await signin(data);
+        // sessionStorage.setItem("User", JSON.stringify(response.data.user));
+        // console.log(sessionStorage.getItem("User"));
+        if (response.data.token) {
+          localStorage.setItem("token", response.data.token);
+          console.log("Token stored:", localStorage.getItem("token")); // Vérifier si le token est bien stocké
+      } else {
+          console.log("No token received from API");
+      } 
+
+
         console.log("response ", response);
+        localStorage.setItem("user", JSON.stringify(response.data.user)); 
+
         toast.success("User signed in successfully");
         setEmail('');
         setPassword('');
-        
-      
+    
         if (response.data.user.role === "candidat") {
           history.push("/landing"); 
+        }  
+        if (response.data.user.role === "recruteur") {
+          history.push("/recuiter"); 
         }
       } catch (err) {
         console.log(err);

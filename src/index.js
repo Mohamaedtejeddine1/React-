@@ -15,6 +15,7 @@ import Auth from "layouts/Auth.js";
 import Landing from "views/Landing.js";
 import Profile from "views/Profile.js";
 import Welcome from "views/Welcome.js";
+import Recuiter from "views/Recuiter.js"
 
 ReactDOM.render(
   <BrowserRouter>
@@ -25,6 +26,7 @@ ReactDOM.render(
       
       {/* add routes without layouts */}
       <Route path="/landing" exact component={Landing} />
+     < Route path="/Recuiter" exact component={Recuiter} />
       <Route path="/profile" exact component={Profile} />
       <Route path="/" exact component={Welcome} />
       {/* add redirect for first page */}

@@ -1,6 +1,8 @@
 import axios from 'axios'
 
 const apiurl = 'http://localhost:5000/users'
+const token = localStorage.getItem("token");
+
 
 export async function getAllUsers() {
     return await axios.get(`${apiurl}/getAllUsers`)
@@ -11,6 +13,7 @@ export async function getAllUsers() {
 }
 export async function signin(data){
     return await axios.post('http://localhost:5000/users/login',data)
+    
 }
 
 export async function signup(data){

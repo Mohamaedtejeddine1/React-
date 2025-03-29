@@ -48,6 +48,7 @@ export default function Register() {
             };
             try {
                 const response = await signup(data);
+                
                 toast.success("User signed up successfully");
                 setUsername("");
                 setEmail("");
