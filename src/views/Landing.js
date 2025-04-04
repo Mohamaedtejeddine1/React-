@@ -13,19 +13,23 @@ export default function Landing() {
   const [offres, setOffres] = useState([]); // Initialize as an empty array
 
 
+
   const getOffres = async () => {
     try {
-      const response = await getAllOffres();
-      console.log("API Response:", response.data); // Log the full response
-      setOffres(response.data.offres || []); // Fallback to an empty array if userListe is undefined
+        const response = await getAllOffres();
+        console.log("res api:", response); 
+        console.log("Data tji", response.data); 
+
+        setOffres(response.data || []); 
     } catch (error) {
-      console.error("Error fetching users:", error.response ? error.response.data : error.message);
+        console.error("Error fetching offers:", error.response ? error.response.data : error.message);
     }
-  };
+};
+
+
   useEffect(() => {
     getOffres();
   }, []);
-
 
 
 

@@ -10,10 +10,10 @@ export default function Recruiter({ color }) {
   const getOffres = async () => {
     try {
         const response = await getAllOffres();
-        console.log("res api:", response); 
-        console.log("Data tji", response.data); 
+        console.log("Full API Response:", response); // Log full response
+        console.log("Data Received:", response.data); // Check what data is received
 
-        setOffres(response.data || []); 
+        setOffres(response.data || []); // Ensure response data exists
     } catch (error) {
         console.error("Error fetching offers:", error.response ? error.response.data : error.message);
     }
@@ -29,16 +29,16 @@ export default function Recruiter({ color }) {
     
     <div
 
-    
+     
       className={
-        "relative  flex flex-col min-w-0 break-words w-full mb-6  " +
+        "relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded " +
         (color === "light" ? "bg-white" : "bg-lightBlue-900 text-white")
       }
     >
      <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
-
-       </div>
-      <div className="rounded-t mt-9 mb-10 pt-22  border-0">
+              <Nav/>  
+             </div>
+      <div className="rounded-t mt-9 mb-0 px-4 py-3 border-2">
         <div className="flex flex-wrap items-center">
           <div className="relative w-full px-4 max-w-full flex-grow flex-1">
             <h3

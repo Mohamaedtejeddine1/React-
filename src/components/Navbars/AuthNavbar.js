@@ -1,4 +1,3 @@
-/*eslint-disable*/
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -9,12 +8,12 @@ export default function Navbar(props) {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   return (
     <>
-      <nav className="top-0 absolute z-50 w-full flex items-center justify-between px-2 py-3 navbar-expand-lg">
+      <nav className="top-0 fixed z-50 w-full flex items-center justify-between px-2 py-3 navbar-expand-lg"> {/* changed from absolute to fixed */}
         <div className="container px-4 mx-auto flex items-center justify-between">
-          <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
+          <div className="w-full b relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
             <Link
               className="text-white text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase"
-              to="/"
+              to="/auth/login"
             >
               RH Platforme
             </Link>
@@ -33,9 +32,7 @@ export default function Navbar(props) {
             }
             id="example-navbar-warning"
           >
-            {/* Adjust this UL for items in a row */}
             <ul className="flex flex-row list-none lg:ml-auto">
-              {/* Add Login as Admin link */}
               <li className="flex items-center">
                 <Link
                   to="/auth/login2"
@@ -44,8 +41,6 @@ export default function Navbar(props) {
                   Login as Admin
                 </Link>
               </li>
-              {/* Other navbar items can go here */}
-
             </ul>
           </div>
         </div>
