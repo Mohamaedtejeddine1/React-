@@ -23,7 +23,7 @@ export default function Navbar() {
           toast.success("Logged out successfully");
   
           
-          history.push("/auth/login2");
+          history.push("/auth/login");
         }
       } catch (error) {
       
@@ -47,53 +47,41 @@ export default function Navbar() {
   return (
     <>
     
-      <nav className="top-0 fixed w-full z-50 flex items-center justify-between px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-700 shadow-md">
-        <div className="container mx-auto flex items-center justify-between">
-   
-          <Link
+    <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg bg-lightBlue-500 mb-3">
+  <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
+    <div className="w-full relative flex justify-between lg:w-auto  px-4 lg:static lg:block lg:justify-start">
+    <Link
             className="text-white text-lg font-bold leading-relaxed uppercase tracking-wide"
-            to="/"
+            to="/landing"
           >
             RH Platforme
           </Link>
-          
-          {/* Menu Button for Mobile */}
-          <button
-            className="cursor-pointer text-xl px-3 py-1 border border-transparent rounded bg-transparent lg:hidden outline-none focus:outline-none"
-            type="button"
-            onClick={() => setNavbarOpen(!navbarOpen)}
-          >
-            <i className="text-white fas fa-bars"></i>
-          </button>
-
-          {/* Navbar Links */}
-          <div
-            className={`lg:flex flex-grow items-center transition-all duration-300 ease-in-out ${
-              navbarOpen ? "block bg-white rounded shadow-lg p-3" : "hidden lg:block"
-            }`}
-          >
-            <ul className="flex flex-row list-none lg:ml-auto">
-            
-              <li className="flex items-center">
+      <button className="cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none" type="button">
+        <span className="block relative w-6 h-px rounded-sm bg-white"></span>
+        <span className="block relative w-6 h-px rounded-sm bg-white mt-1"></span>
+        <span className="block relative w-6 h-px rounded-sm bg-white mt-1"></span>
+      </button>
+    </div>
+    <div className="lg:flex flex-grow items-center">
+      <ul className="flex flex-col lg:flex-row list-none ml-auto">
+      <li className="nav-item">
                 <Link
-                  to="/services"
-                  className="text-white hover:text-gray-200 px-4 py-2 text-sm font-semibold uppercase transition duration-200"
+                  to="/MyProfil"
+                  className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
                 >
-                  Services
+                  Profil
                 </Link>
               </li>
-              <li className="flex items-center">
-              <button
-            onClick={handleLogout}
-            className="text-white active:bg-red-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg"
-          >
-            Logout
-          </button>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+         
+          <li className="nav-item">
+            <button  onClick={handleLogout} className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75" href="#pablo">
+              Logout
+            </button >
+          </li>
+      </ul>
+    </div>
+  </div>
+</nav>
     </>
   );
 }

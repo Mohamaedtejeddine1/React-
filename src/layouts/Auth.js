@@ -13,22 +13,19 @@ import Login2 from "views/auth/Login2.js"; // login for admin
 import forget from "views/auth/forget";
 import Register from "views/auth/Register.js";
 
-
-
-
 export default function Auth() {
   return (
     <>
       <Navbar transparent />
       <main>
         <section className="relative w-full h-full py-40 min-h-screen">
-          <div
+           <div
             className="absolute top-0 w-full h-full bg-blueGray-800 bg-no-repeat bg-full"
             style={{
               backgroundImage:
-                "url(" + require("assets/img/register_bg_2.png").default + ")",
+                "url(" + require("assets/img/bg2.png").default + ")",
             }}
-          ></div>
+          ></div> 
           <Switch>
           
 

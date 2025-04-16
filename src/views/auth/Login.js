@@ -5,7 +5,7 @@ import { signin } from "../../services/ApiUser";
 import { useHistory } from "react-router-dom";
 
 export default function Login() {
-  const history = useHistory(); // Using useHistory for navigation
+  const history = useHistory(); 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({
@@ -45,7 +45,7 @@ export default function Login() {
           localStorage.setItem("token", response.data.token);
           console.log("Token stored:", localStorage.getItem("token")); // Vérifier si le token est bien stocké
       } else {
-          console.log("No token received from API");
+          console.log("No token received from bacckend");
       } 
 
 
@@ -74,24 +74,27 @@ export default function Login() {
       console.log("form invalid");
     }
   };
-
   return (
     <>
       <div className="container mx-auto px-4 h-full">
         <div className="flex content-center items-center justify-center h-full">
-          <div className="w-full lg:w-4/12 px-4">
-            <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200 border-0">
+          <div className="w-full md:w-6/12 lg:w-4/12 px-4">
+            <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-white border-0">
               <div className="rounded-t mb-0 px-6 py-6">
                 <div className="text-center mb-3">
                   <Toaster />
-                  <h6 className="text-blue-600 text-sm font-bold">Sign in</h6>
+                  <h2 className="text-lightBlue-600 text-sm font-bold">Sign in</h2>
                 </div>
                 <hr className="mt-6 border-b-1 border-blueGray-300" />
               </div>
               <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
                 <form onSubmit={handleSignin}>
+                  {/* Email Field */}
                   <div className="relative w-full mb-3">
-                    <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlFor="email">
+                    <label
+                      className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                      htmlFor="email"
+                    >
                       Email
                     </label>
                     <input
@@ -99,7 +102,7 @@ export default function Login() {
                       id="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      className="border px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Email"
                       required
                     />
@@ -109,7 +112,8 @@ export default function Login() {
                       </div>
                     )}
                   </div>
-
+  
+                  {/* Password Field */}
                   <div className="relative w-full mb-3">
                     <label
                       className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
@@ -122,8 +126,9 @@ export default function Login() {
                       id="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className={`border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 ${errors.password ? "border-red-500" : ""
-                        }`}
+                      className={`border px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 ${
+                        errors.password ? "border-red-500" : ""
+                      }`}
                       placeholder="Password"
                       required
                     />
@@ -133,33 +138,42 @@ export default function Login() {
                       </div>
                     )}
                   </div>
-
+  
+            
                   <div className="text-center mt-6">
                     <button
-                      className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+                      className="bg-lightBlue-600 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none w-full ease-linear transition-all duration-150"
                       type="submit"
                     >
                       Sign In
                     </button>
+                 
+                    <div className="mt-3">
+                      <Link to="/auth/register" className="text-lightBlue-600 hover:underline">
+                        <small>Create new account</small>
+                      </Link>
+                    </div>
                   </div>
                 </form>
               </div>
             </div>
             <div className="flex flex-wrap mt-6 relative">
-              <div className="w-1/2">
-                <Link to="/auth/forget" className="text-blueGray-200">
+              {/* <div className="w-1/2">
+                <Link to="/auth/forget" className="text-blueGray-600">
                   <small>Forgot password?</small>
                 </Link>
               </div>
               <div className="w-1/2 text-right">
-                <Link to="/auth/register" className="text-blueGray-200">
+                <Link to="/auth/register" className="text-blueGray-600">
                   <small>Create new account</small>
                 </Link>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
       </div>
     </>
   );
+  
+  
 }

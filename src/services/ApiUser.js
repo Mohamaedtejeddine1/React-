@@ -4,6 +4,10 @@ const apiurl = 'http://localhost:5000/users'
 const token = localStorage.getItem("token");
 
 
+
+
+
+
 export async function getAllUsers() {
     return await axios.get(`${apiurl}/getAllUsers`)
 }
@@ -30,3 +34,23 @@ export async function createUser(userData) {
 export async function updateUserById(userData,idUser) {
     return await axios.put(`${apiurl}/updateUserById/${idUser}`,userData)
 }
+export async function updateCandidatDetails(idUser, data) {
+    return await axios.put(`${apiurl}/updateCandidatDetails/${idUser}`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+      },
+    });
+  }
+  
+
+export async function updateProfil(idUser, data) {
+    return await axios.put(`${apiurl}/updateProfil/${idUser}`, data, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+          },
+      
+      });
+}
+
