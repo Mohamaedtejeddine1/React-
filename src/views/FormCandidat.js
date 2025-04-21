@@ -1,226 +1,265 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
-import Nav from "components/CandidatNav/Nav";
-import { updateCandidatDetails } from "../services/ApiUser"; 
+import Navbar from "components/CandidatNav/Nav.js";
+import Footer from "components/Footers/Footer.js";
 
 export default function FormCandidat() {
-  const [competance, setCompetance] = useState("");
-  const [experiences, setExperiences] = useState("");
-  const [cv, setCv] = useState(null);     
-  const [isLoading, setIsLoading] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [errors, setErrors] = useState({
+  const location = useLocation();
+  const { selectedOffreId } = location.state || {};
+
+  const [formData, setFormData] = useState({
+    username: "",
     competance: "",
     experiences: "",
+    telephone:"",
+    email:"",
+    Motivationletter:"",
+    currentPosition:""
+    
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
 
-  const formValidation = () => {
-    let isValid = true;
-    let newErrors = { competance: "", experiences: "" };
-
-    if (!competance.trim()) {
-      newErrors.competance = "Compétence requise";
-      isValid = false;
-    }
-    if (!experiences.trim()) {
-      newErrors.experiences = "Expérience requise";
-      isValid = false;
-    }
-
-    setErrors(newErrors);
-    return isValid;
+  // Handle input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
-
-  // Handle file change (for CV)
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    console.log(file); // Log the file to check if it's selected
-
-    if (file) {
-      // Validate file type
-      const validTypes = [
-        "application/pdf",
-        "application/msword",
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      ];
-
-      if (!validTypes.includes(file.type)) {
-        setErrorMessage("Seuls les fichiers PDF et Word sont acceptés");
-        e.target.value = ""; // Clear the file input
-        return;
-      }
-
-      // Validate file size (5MB max)
-      if (file.size > 5 * 1024 * 1024) {
-        setErrorMessage("La taille du fichier ne doit pas dépasser 5MB");
-        e.target.value = ""; // Clear the file input
-        return;
-      }
-
-      setCv(file);  // Save the file
-      setErrorMessage("");  // Reset error message
-    }
-  };
-
-  // Handle form submission (update candidat details)
-  const handleUpdateCandidatDetails = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSuccessMessage("");
-    setErrorMessage("");
-
-    if (!formValidation()) return;
-
-    setIsLoading(true);
-
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (!user || !user._id) {
-      setErrorMessage("Utilisateur non authentifié");
-      setIsLoading(false);
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("competance", competance);
-    formData.append("experiences", experiences);
-    if (cv) {
-      formData.append("cv", cv);  // Append file if selected
-    }
-
+    setIsSubmitting(true);
+    setError(null);
+    setSuccess(false);
+  
     try {
-      const response = await updateCandidatDetails(user._id, formData);
-
-      if (response.status === 200 || response.status === 201) {
-        setCompetance("");
-        setExperiences("");
-        setCv(null);
-        setSuccessMessage("Vos informations ont été mises à jour avec succès!");
-
-        if (response.data.updatedUser) {
-          localStorage.setItem(
-            "user",
-            JSON.stringify({
-              ...user,
-              ...response.data.updatedUser,
-            })
-          );
+      const user = JSON.parse(localStorage.getItem("user"));
+      const userId = user?._id;
+      if (!userId) throw new Error("User not authenticated");
+      if (!selectedOffreId) throw new Error("No offer selected");
+  
+      const response = await axios.post(
+        `http://localhost:5000/users/postulerA/${userId}/${selectedOffreId}`,
+        formData, // Send as JSON
+        {
+          headers: {
+            "Content-Type": "application/json", // Change to JSON
+          },
         }
-      } else {
-        setErrorMessage("Réponse inattendue du serveur");
-      }
+      );
+  
+      setSuccess(true);
+      setFormData({
+        username: "",
+        competance: "",
+        experiences: "",
+        telephone:"",
+        currentPosition:"",
+        Motivationletter:"",
+        email:""
+      });
     } catch (err) {
-      console.error("Update error:", err);
-      if (err.response) {
-        if (err.response.status === 404) {
-          setErrorMessage("Endpoint non trouvé - vérifiez la connexion API");
-        } else {
-          setErrorMessage(
-            err.response.data?.error || `Erreur du serveur (${err.response.status})`
-          );
-        }
-      } else if (err.request) {
-        setErrorMessage("Pas de réponse du serveur - vérifiez votre connexion");
-      } else {
-        setErrorMessage("Erreur lors de la configuration de la requête");
-      }
+      setError(err.response?.data?.message || err.message || "Application failed");
     } finally {
-      setIsLoading(false);
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
-      <Nav />
-      <div className="flex-grow flex items-center justify-center p-4">
-        <div className="w-full max-w-sm bg-white p-8 rounded-lg shadow-md">
-          <h2 className="text-2xl font-bold text-lightBlue-600 mb-6 text-center">
-            Apply Now
-          </h2>
+    <>
+      <Navbar transparent />
+      <main className="">
+        <section className="relative py-16 bg-blueGray-200">
+          <div className="container mx-auto px-2">
+            <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-x2 rounded-lg mt-16">
+              <div className="px-6">
+                <div className="text-center mt-12">
+                  <h3 className="text-4xl font-semibold leading-normal mb-2   text-sm font-bold uppercase    text-lightBlue-600">
+                  Recruitment Form
 
-          {successMessage && (
-            <div className="mb-4 p-2 bg-green-100 text-green-700 rounded">
-              {successMessage}
-            </div>
-          )}
+                  </h3>
+                  {selectedOffreId && (
+                    <div className="mb-4 text-blueGray-600">
+                      <p className="text-lg font-bold">
+                        
+                      </p>
+                    </div>
+                  )}
+                </div>
 
-          {errorMessage && (
-            <div className="mb-4 p-2 bg-red-100 text-red-700 rounded">
-              {errorMessage}
-            </div>
-          )}
+                {error && (
+                  <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+                    {error}
+                  </div>
+                )}
+                {success && (
+                  <div className="bg-green border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+                    Postulate  successfully!
+                  </div>
+                )}
 
-          <form
-            className="space-y-6"
-            onSubmit={handleUpdateCandidatDetails}
-            encType="multipart/form-data"
-          >
-            {/* Compétence */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Compétence
-              </label>
-              <input
-                type="text"
-                className={`w-full px-4 py-2 border rounded-md ${
-                  errors.competance ? "border-red-500" : "border-gray-300"
-                }`}
-                placeholder="Ex: Développement Web"
-                value={competance}
-                onChange={(e) => setCompetance(e.target.value)}
-              />
-              {errors.competance && (
-                <p className="text-red-500 text-sm mt-1">{errors.competance}</p>
-              )}
-            </div>
+                <div className="mt-10 py-10 border-t border-blueGray-200 text-left">
+                  <form onSubmit={handleSubmit}>
+                    <div className="flex flex-wrap">
+                      
+                      {/* Full Name */}
+                      <div className="w-full lg:w-6/12 px-4">
+                        <div className="relative w-full mb-3">
+                          <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                            Username
+                          </label>
+                          <input
+                            type="text"
+                            name="username"
+                            value={formData.username}
+                            onChange={handleChange}
+                            className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="w-full lg:w-6/12 px-4">
+                        <div className="relative w-full mb-3">
+                          <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                          Email address 
 
-            {/* Expérience */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Expérience
-              </label>
-              <input
-                type="text"
-                className={`w-full px-4 py-2 border rounded-md ${
-                  errors.experiences ? "border-red-500" : "border-gray-300"
-                }`}
-                placeholder="Ex: 2 ans"
-                value={experiences}
-                onChange={(e) => setExperiences(e.target.value)}
-              />
-              {errors.experiences && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.experiences}
-                </p>
-              )}
-            </div>
+                          </label>
+                          <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                            required
+                          />
+                        </div>
+                      </div>
+                   
+                      <div className="w-full lg:w-6/12 px-4">
+                        <div className="relative w-full mb-3">
+                          <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                                Direct telephone
+                          </label>
+                          <input
+                            type="text"
+                            name="telephone"
+                            value={formData.telephone}
+                            onChange={handleChange}
+                            className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                            required
+                          />
+                        </div>
+                      </div>
+                      
+                      
 
-            {/* CV Upload */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Télécharger votre CV (PDF ou Word, max 5MB)
-              </label>
-              <input
-                type="file"
-                className="w-full text-sm"
-                onChange={handleFileChange}
-                accept=".pdf,.doc,.docx"
-                key={cv ? cv: "file-input"} 
-              />
-            </div>
+                      {/* Skills */}
+                      <div className="w-full lg:w-6/12 px-4">
+                        <div className="relative w-full mb-3">
+                          <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                            Skills
+                          </label>
+                          <input
+                            type="text"
+                            name="competance"
+                            value={formData.competance}
+                            onChange={handleChange}
+                            className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="w-full lg:w-6/12 px-4">
+                        <div className="relative w-full mb-3">
+                          <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                          Current position
 
-            {/* Submit Button */}
-            <div>
-              <button
-                type="submit"
-                className="w-full bg-lightBlue-600 text-white py-2 px-4 rounded hover:bg-lightBlue-700 transition-colors"
-                disabled={isLoading}
-              >
-                {isLoading ? "Envoi en cours..." : "Envoyer"}
-              </button>
+                          </label>
+                          <input
+                            type="text"
+                            name="currentPosition"
+                            value={formData.currentPosition}
+                            onChange={handleChange}
+                            className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                            required
+                          />
+                        </div>
+                      </div>
+                      
+
+                      {/* Experience */}
+                      <div className="w-full lg:w-6/12 px-4">
+                        <div className="relative w-full mb-3">
+                          <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                            
+                              Number of years of experience 
+                          </label>
+                          <input
+                            name="experiences"
+                            placeholder="EX:2 years "
+                            value={formData.experiences}
+                            onChange={handleChange}
+                            className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                            required
+                       
+                          />
+                        </div>
+                      </div>
+                      <div className="w-full lg:w-6/12 px-4">
+                        <div className="relative w-full mb-3">
+                          <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                            Motivation Letter
+                          </label>
+                          <textarea
+                            type="text"
+                            name="Motivationletter"
+                            value={formData.Motivationletter}
+                            onChange={handleChange}
+                            className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                            required
+                          />
+                        </div>
+                      </div>
+                  
+                      </div>      <div className="w-full lg:w-6/12 px-4">
+                        {/* <div className="relative w-full mb-3">
+                          <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                           CV (PDF-DOCX)
+                          </label>
+                          <input
+                            type="file"
+                            name="username"
+                            value={formData.username}
+                            onChange={handleChange}
+                            className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                            required
+                          />
+                        </div> */}
+                    </div>
+
+                    <div className="text-center mt-6">
+                      <button
+                        className={`bg-lightBlue-600 text-white text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150 ${
+                          isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
+                        type="submit"
+                        disabled={isSubmitting}
+                      >
+                        {isSubmitting ? "Submitting..." : "Validate My application"}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
             </div>
-          </form>
-        </div>
-      </div>
-    </div>
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </>
   );
 }

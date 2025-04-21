@@ -8,6 +8,7 @@ const token = localStorage.getItem("token");
 
 
 
+
 export async function getAllUsers() {
     return await axios.get(`${apiurl}/getAllUsers`)
 }
@@ -43,7 +44,7 @@ export async function updateCandidatDetails(idUser, data) {
       },
     });
   }
-  
+
 
 export async function updateProfil(idUser, data) {
     return await axios.put(`${apiurl}/updateProfil/${idUser}`, data, {
@@ -53,4 +54,3 @@ export async function updateProfil(idUser, data) {
       
       });
 }
-

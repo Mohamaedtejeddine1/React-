@@ -50,14 +50,14 @@ export default function CardTable({ color }) {
   };
 
   // Update user
-  const updateNewUser = async (newUser, id) => {
-    try {
-      await updateUserById(newUser, id);
-      getUsers();
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const updateNewUser = async (newUser, id) => {
+  //   try {
+  //     await updateUserById(newUser, id);
+  //     getUsers();
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
 
   const handleEditUser = (user) => {
@@ -134,7 +134,7 @@ export default function CardTable({ color }) {
                 >
                   Add User
                 </button>
-                <button
+                {/* <button
                   onClick={() => {
                     if (selectedUser) {
                       updateNewUser(newUser, selectedUser._id);
@@ -143,7 +143,7 @@ export default function CardTable({ color }) {
                   className="bg-lightBlue-500 mt-2 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 >
                   {selectedUser ? "Update User" : "No User Selected"}
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
@@ -207,11 +207,11 @@ export default function CardTable({ color }) {
               {users.map((user, index) => (
                 <tr key={index}>
                   <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-3 text-left flex items-center">
-                    <img
+                    {/* <img
                       src={require("assets/img/bootstrap.jpg").default}
                       className="h-12 w-12 bg-white rounded-full border"
                       alt="..."
-                    />
+                    /> */}
                     <span
                       className={
                         "ml-3 font-bold " +
@@ -238,12 +238,12 @@ export default function CardTable({ color }) {
                     >
                       Delete
                     </button>
-                    <button
+                    {/* <button
                       className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                       onClick={() => handleEditUser(user)}
                     >
                       Edit User
-                    </button>
+                    </button> */}
                   </td>
                 </tr>
               ))}
