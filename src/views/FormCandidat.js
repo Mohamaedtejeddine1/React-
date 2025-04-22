@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import Navbar from "components/CandidatNav/Nav.js";
+import toast, { Toaster } from "react-hot-toast";
 import Footer from "components/Footers/Footer.js";
 
 export default function FormCandidat() {
@@ -12,12 +13,13 @@ export default function FormCandidat() {
     username: "",
     competance: "",
     experiences: "",
-    telephone:"",
-    email:"",
-    Motivationletter:"",
-    currentPosition:""
-    
+    telephone: "",
+    email: "",
+    Motivationletter: "",
+    currentPosition: "",
+    cvFile: null 
   });
+  
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -30,6 +32,15 @@ export default function FormCandidat() {
       [name]: value,
     }));
   };
+
+  // Handle file input change
+  const handleFileChange = (e) => {
+    setFormData({
+      ...formData,
+      cvFile: e.target.files[0] // Store the file object
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -41,13 +52,28 @@ export default function FormCandidat() {
       const userId = user?._id;
       if (!userId) throw new Error("User not authenticated");
       if (!selectedOffreId) throw new Error("No offer selected");
-  
+
+      // Create FormData for file upload
+      const formDataToSend = new FormData();
+      
+      // Append all text fields
+      Object.keys(formData).forEach(key => {
+        if (key !== 'cvFile') {
+          formDataToSend.append(key, formData[key]);
+        }
+      });
+      
+      // Append the file if it exists
+      if (formData.cvFile) {
+        formDataToSend.append('cv', formData.cvFile);
+      }
+
       const response = await axios.post(
         `http://localhost:5000/users/postulerA/${userId}/${selectedOffreId}`,
-        formData, // Send as JSON
+        formDataToSend, // Send as FormData
         {
           headers: {
-            "Content-Type": "application/json", // Change to JSON
+            "Content-Type": "multipart/form-data", // Important for file upload
           },
         }
       );
@@ -57,13 +83,16 @@ export default function FormCandidat() {
         username: "",
         competance: "",
         experiences: "",
-        telephone:"",
-        currentPosition:"",
-        Motivationletter:"",
-        email:""
+        telephone: "",
+        currentPosition: "",
+        Motivationletter: "",
+        email: "",
+        cvFile: null
       });
     } catch (err) {
       setError(err.response?.data?.message || err.message || "Application failed");
+      toast.error("Something went wrong. Please try again.");
+
     } finally {
       setIsSubmitting(false);
     }
@@ -78,34 +107,32 @@ export default function FormCandidat() {
             <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-x2 rounded-lg mt-16">
               <div className="px-6">
                 <div className="text-center mt-12">
-                  <h3 className="text-4xl font-semibold leading-normal mb-2   text-sm font-bold uppercase    text-lightBlue-600">
-                  Recruitment Form
-
+                  <h3 className="text-4xl font-semibold leading-normal mb-2 text-sm font-bold uppercase text-lightBlue-600">
+                    Recruitment Form
                   </h3>
                   {selectedOffreId && (
                     <div className="mb-4 text-blueGray-600">
-                      <p className="text-lg font-bold">
-                        
-                      </p>
+                      <p className="text-lg font-bold"></p>
                     </div>
                   )}
                 </div>
 
                 {error && (
-                  <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+                  <div className="bg-red-100 border border-red-400 text-red-300 px-4 py-3 rounded relative mb-4">
                     {error}
                   </div>
                 )}
                 {success && (
-                  <div className="bg-green border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
-                    Postulate  successfully!
+                  toast.success(" Postulate successfully!"),
+                  <div className="bg-green border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+                  
+                < h1 className="text-green bg-green    "  > Postulate successfully!</h1>
                   </div>
                 )}
 
                 <div className="mt-10 py-10 border-t border-blueGray-200 text-left">
                   <form onSubmit={handleSubmit}>
                     <div className="flex flex-wrap">
-                      
                       {/* Full Name */}
                       <div className="w-full lg:w-6/12 px-4">
                         <div className="relative w-full mb-3">
@@ -125,8 +152,7 @@ export default function FormCandidat() {
                       <div className="w-full lg:w-6/12 px-4">
                         <div className="relative w-full mb-3">
                           <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
-                          Email address 
-
+                            Email address
                           </label>
                           <input
                             type="email"
@@ -142,7 +168,7 @@ export default function FormCandidat() {
                       <div className="w-full lg:w-6/12 px-4">
                         <div className="relative w-full mb-3">
                           <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
-                                Direct telephone
+                            Direct telephone
                           </label>
                           <input
                             type="text"
@@ -155,9 +181,10 @@ export default function FormCandidat() {
                         </div>
                       </div>
                       
-                      
+                     
+                    
 
-                      {/* Skills */}
+                     
                       <div className="w-full lg:w-6/12 px-4">
                         <div className="relative w-full mb-3">
                           <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
@@ -176,8 +203,7 @@ export default function FormCandidat() {
                       <div className="w-full lg:w-6/12 px-4">
                         <div className="relative w-full mb-3">
                           <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
-                          Current position
-
+                            Current position
                           </label>
                           <input
                             type="text"
@@ -190,22 +216,19 @@ export default function FormCandidat() {
                         </div>
                       </div>
                       
-
                       {/* Experience */}
                       <div className="w-full lg:w-6/12 px-4">
                         <div className="relative w-full mb-3">
                           <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
-                            
-                              Number of years of experience 
+                            Number of years of experience
                           </label>
                           <input
                             name="experiences"
-                            placeholder="EX:2 years "
+                            placeholder="EX:2 years"
                             value={formData.experiences}
                             onChange={handleChange}
                             className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                             required
-                       
                           />
                         </div>
                       </div>
@@ -224,23 +247,23 @@ export default function FormCandidat() {
                           />
                         </div>
                       </div>
-                  
-                      </div>      <div className="w-full lg:w-6/12 px-4">
-                        {/* <div className="relative w-full mb-3">
+                      <div className="w-full lg:w-6/12 px-4">
+                        <div className="relative w-full mb-3">
                           <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
-                           CV (PDF-DOCX)
+                            CV (PDF/DOCX)
                           </label>
                           <input
                             type="file"
-                            name="username"
-                            value={formData.username}
-                            onChange={handleChange}
+                            name="cvFile"
+                            onChange={handleFileChange}
+                            accept=".pdf,.doc,.docx"
                             className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                             required
                           />
-                        </div> */}
+                        </div>  
+                      </div>
                     </div>
-
+        
                     <div className="text-center mt-6">
                       <button
                         className={`bg-lightBlue-600 text-white text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150 ${

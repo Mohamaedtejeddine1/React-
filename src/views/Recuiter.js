@@ -91,29 +91,51 @@ export default function Recruiter({ color }) {
                       </td>
                     </tr>
                     {visibleCandidates[offre._id] && (
-                      <tr>
-                        <td colSpan="6" className="px-6 py-4 bg-gray-50">
-                          <div className="text-sm">
-                            {offre.candidats?.length > 0 ? (
-                              offre.candidats.map((candidate) => (
-                                <div key={candidate._id} className="mb-4 p-3 border-b">
-                                  <h4 className="font-bold">{candidate.username}</h4>
-                                  <p>Email: {candidate.email}</p>
-                                  <p>Skills: {candidate.competance}</p>
-                                  <p>Number of years of experience : {candidate.experiences}</p>
-                                  <p>Current Position: {candidate.currentPosition}</p>
-                                  <p>Motivation letter {candidate.Motivationletter}</p>
-                                  <span>Applied At: {new Date(candidate.appliedAt).toLocaleString()}</span>
-                                  
-
-                                </div>
-                              ))
-                            ) : (
-                              <p>No candidates yet</p>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
+         <tr>
+         <td colSpan="6" className="px-6 py-4 bg-gray-100">
+           <div className="grid grid-cols-1 gap-6">
+             {offre.candidats?.length > 0 ? (
+               offre.candidats.map((candidate) => (
+                 <div
+                   key={candidate._id}
+                   className="border border-gray-300 rounded-xl p-5 bg-white shadow-sm hover:shadow-md transition-all"
+                 >
+                   <div className="flex flex-col gap-2 text-sm text-gray-800">
+                     <div className="flex justify-between items-center mb-2">
+                       <h4 className="text-lg font-bold text-blue-800">{candidate.username}</h4>
+                       <span className="text-xs text-lightblue-500 italic">
+                         Applied At: {new Date(candidate.appliedAt).toLocaleString()}
+                       </span>
+                     </div>
+       
+                     <p><strong>Email:</strong> {candidate.email}</p>
+                     <p><strong>Skills:</strong> {candidate.competance}</p>
+                     <p><strong>Experience:</strong> {candidate.experiences}</p>
+                     <p><strong>Current Position:</strong> {candidate.currentPosition}</p>
+                     <p><strong>Motivation Letter:</strong> {candidate.Motivationletter}</p>
+       
+                     {candidate.cvLink && (
+                       <div className="mt-3">
+                         <a
+                           href={candidate.cvLink}
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           className="inline-block bg-lightBlue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
+                         >
+                            Download CV
+                         </a>
+                       </div>
+                     )}
+                   </div>
+                 </div>
+               ))
+             ) : (
+               <p className="text-gray-500 text-center">No candidates yet</p>
+             )}
+           </div>
+         </td>
+       </tr>
+       
                     )}
                   </React.Fragment>
                 ))
