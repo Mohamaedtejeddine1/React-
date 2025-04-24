@@ -12,15 +12,24 @@ const apiurl = 'http://localhost:5000/offres';
 
   
 
+export async function getOffresByRecruteur() {
+    const token = localStorage.getItem("token");
+  
+    return await axios.get(`${apiurl}/getOffresByRecruteur`, {
+      headers: {
+        Authorization: `Bearer ${token}`, 
+      },
+    });
+  }
 
 
 
 export async function getAllOffres() {
-  const token = localStorage.getItem("token"); // Get token from localStorage
+  const token = localStorage.getItem("token"); 
 
   return await axios.get(`${apiurl}/getAllOffres`, {
     headers: {
-      Authorization: `Bearer ${token}`, // Send token in Authorization header
+      Authorization: `Bearer ${token}`,
     },
   });
 }
@@ -31,17 +40,15 @@ export async function getOffreById(id) {
     return await axios.get(`${apiurl}/getOffreById/${id}`);
 }
 
-// Create a new job offer
-export async function createOffre(offreData) {
-    const token = localStorage.getItem('jwt_token_9antra');
-    return await axios.post(`${apiurl}/createOffre`, offreData, {
-        withCredentials: true,
-        headers: {
-            'Authorization': `Bearer ${token}`,
-        },
-    });
-}
-
+export const createOffre = async (offreData) => {
+  const token = localStorage.getItem("token");
+  return await axios.post(`${apiurl}/createOffre`, offreData, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
 // Update a job offer
 export async function updateOffre(id, offreData) {
     const token = localStorage.getItem('jwt_token_9antra');

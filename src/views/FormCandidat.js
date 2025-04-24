@@ -4,7 +4,7 @@ import axios from "axios";
 import Navbar from "components/CandidatNav/Nav.js";
 import toast, { Toaster } from "react-hot-toast";
 import Footer from "components/Footers/Footer.js";
-
+ 
 export default function FormCandidat() {
   const location = useLocation();
   const { selectedOffreId } = location.state || {};
@@ -88,7 +88,9 @@ export default function FormCandidat() {
         Motivationletter: "",
         email: "",
         cvFile: null
+        
       });
+      toast.success(" Postulate successfully!");
     } catch (err) {
       setError(err.response?.data?.message || err.message || "Application failed");
       toast.error("Something went wrong. Please try again.");
@@ -123,11 +125,10 @@ export default function FormCandidat() {
                   </div>
                 )}
                 {success && (
-                  toast.success(" Postulate successfully!"),
-                  <div className="bg-green border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
-                  
-                < h1 className="text-green bg-green    "  > Postulate successfully!</h1>
-                  </div>
+                 
+                  <div className="bg-green border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"> 
+                     toast.success(" Postulate successfully!"),
+                   </div>
                 )}
 
                 <div className="mt-10 py-10 border-t border-blueGray-200 text-left">

@@ -214,19 +214,19 @@ export default function Acceuil() {
         </section>
 
         <section className="pt-20 pb-48">
-          <div className="container mx-auto px-4">
+          {/* <div className="container mx-auto px-4">
             <div className="flex flex-wrap justify-center text-center mb-24">
-              <div className="w-full lg:w-6/12 px-4">
+              <div className="w-full lg:w-6/12 px-4"> */}
                 {/* <h2 className="text-4xl font-semibold">Here are our heroes</h2>
                 <p className="text-lg leading-relaxed m-4 text-blueGray-500">
                   According to the National Oceanic and Atmospheric
                   Administration, Ted, Scambos, NSIDClead scentist, puts the
                   potentially record maximum.
                 </p> */}
-              </div>
-            </div>
+              {/* </div>
+            </div> */}
             <div className="flex flex-wrap">
-              <div className="w-full md:w-6/12 lg:w-3/12 lg:mb-0 mb-12 px-4">
+              {/* <div className="w-full md:w-6/12 lg:w-3/12 lg:mb-0 mb-12 px-4"> */}
                 {/* <div className="px-6">
                   <img
                     alt="..."
@@ -260,8 +260,8 @@ export default function Acceuil() {
                     </div>
                   </div>
                 </div> */}
-              </div>
-              <div className="w-full md:w-6/12 lg:w-3/12 lg:mb-0 mb-12 px-4">
+              {/* </div> */}
+              {/* <div className="w-full md:w-6/12 lg:w-3/12 lg:mb-0 mb-12 px-4"> */}
                 {/* <div className="px-6">
                   <img
                     alt="..."
@@ -289,8 +289,8 @@ export default function Acceuil() {
                     </div>
                   </div>
                 </div> */}
-              </div>
-              <div className="w-full md:w-6/12 lg:w-3/12 lg:mb-0 mb-12 px-4">
+              {/* </div> */}
+              {/* <div className="w-full md:w-6/12 lg:w-3/12 lg:mb-0 mb-12 px-4"> */}
                 {/* <div className="px-6">
                   <img
                     alt="..."
@@ -324,7 +324,7 @@ export default function Acceuil() {
                     </div>
                   </div>
                 </div> */}
-              </div>
+              {/* </div> */}
               <div className="w-full md:w-6/12 lg:w-3/12 lg:mb-0 mb-12 px-4">
                 <div className="px-6">
                   {/* <img
@@ -367,7 +367,7 @@ export default function Acceuil() {
                 </div>
               </div>
             </div>
-          </div>
+          {/* </div> */}
         </section>
 
         <section className="pb-20 relative block ">
@@ -391,7 +391,7 @@ export default function Acceuil() {
             </svg> */}
           {/* </div> */}
 
-          <div className="container mx-auto px-4 lg:pt-24 lg:pb-64">
+          {/* <div className="container mx-auto px-4 lg:pt-24 lg:pb-64"> */}
             {/* <div className="flex flex-wrap text-center justify-center"> */}
             {/* <div className="w-full lg:w-6/12 px-4">
                 <h2 className="text-4xl font-semibold text-white">
@@ -403,8 +403,8 @@ export default function Acceuil() {
                   Atmospheric Administration, Ted, Scambos.
                 </p>
               </div> */}
-          </div>
-          <div className="flex flex-wrap mt-12 justify-center">
+          {/* </div> */}
+          {/* <div className="flex flex-wrap mt-12 justify-center"> */}
             {/* <div className="w-full lg:w-3/12 px-4 text-center">
                 <div className="text-blueGray-800 p-3 w-12 h-12 shadow-lg rounded-full bg-white inline-flex items-center justify-center">
                   <i className="fas fa-medal text-xl"></i>
@@ -441,7 +441,7 @@ export default function Acceuil() {
                   the bulk of the card's content.
                 </p>
               </div> */}
-          </div>
+          {/* </div> */}
           {/* </div> */}
         </section>
         <section className="relative block py-24 lg:pt-0  ">
