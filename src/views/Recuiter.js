@@ -4,7 +4,7 @@ import {
   getOffresByRecruteur, 
   createOffre, 
   updateOffre,
-  deleteOffre 
+  deleteOffre ,analyseCV
 } from "../services/ApiOffres";
 import Nav from "components/CandidatNav/RecuiterNav";
 import toast, { Toaster } from "react-hot-toast";
@@ -101,6 +101,7 @@ export default function Recruiter({ color }) {
   useEffect(() => {
     getOffres();
   }, []);
+  
 
   if (loading) return <div className="p-4">Loading...</div>;
 
@@ -136,6 +137,7 @@ export default function Recruiter({ color }) {
             duration: Infinity,
           }
         }}
+
       />
       
       <Nav />

@@ -369,7 +369,6 @@ export default function Acceuil() {
             </div>
           {/* </div> */}
         </section>
-
         <section className="pb-20 relative block ">
           {/* <div
             className="bottom-auto top-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden -mt-20 h-20"
