@@ -9,6 +9,9 @@ export default function MyProfil() {
   const [email, setEmail] = useState("");
   const [experiences, setExperiences] = useState("");
   const [username, setUsername] = useState("");
+  const [offres, setOffres] = useState("");
+  const [telephone, setTelephone] = useState("");
+  const [currentPosition, setCurrentPosition] = useState("");
 
   const [loading, setLoading] = useState(false);
 
@@ -17,16 +20,25 @@ export default function MyProfil() {
     email: "",
     competance: "",
     experiences: "",
+    offres:"",
+    telephone: "",
+    currentPosition: "",
   });
 
  
   useEffect(() => {
+ 
     const user = JSON.parse(localStorage.getItem("user"));
+    
     if (user) {
       setUsername(user.username || "");
       setEmail(user.email || "");
       setCompetance(user.competance || "");
       setExperiences(user.experiences || "");
+      setOffres(user.offres || "");
+      setTelephone(user.telephone || "");
+      setCurrentPosition(user.currentPosition || "");
+     
     }
   }, []);
 
@@ -66,7 +78,10 @@ export default function MyProfil() {
         username,
         email,
         competance,
+        currentPosition,
         experiences,
+        telephone,
+        offres
       };
 
       setLoading(true);
@@ -77,7 +92,7 @@ export default function MyProfil() {
 
         // Réinitialiser les erreurs
         setErrors({
-          username: "",
+          username: "",       telephone:''  , currentPosition:'',
           email: "",
           competance: "",
           experiences: "",
@@ -174,6 +189,51 @@ export default function MyProfil() {
                 />
                 <p className="text-red-500 text-xs mt-1">{errors.competance}</p>
               </div>
+              <div className="w-full lg:w-6/12 px-4 mb-4">
+                <label htmlFor="competance" className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+              telephone
+                </label>
+                <input
+                  id="telephone"
+                  type="text"
+                  value={telephone}
+                  onChange={(e) => setTelephone(e.target.value)}
+                  className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow w-full"
+                  placeholder="telephone "
+                />
+                <p className="text-red-500 text-xs mt-1">{errors.telephone}</p>
+              </div>
+              <div className="w-full lg:w-6/12 px-4 mb-4">
+                <label htmlFor="competance" className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                currentPosition
+                </label>
+                <input
+                  id="currentPosition"
+                  type="text"
+                  value={currentPosition}
+                  onChange={(e) => setCurrentPosition(e.target.value)}
+                  className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow w-full"
+                  placeholder="telephone "
+                />
+                <p className="text-red-500 text-xs mt-1">{errors.currentPosition}</p>
+              </div>
+
+
+              {/* <div className="w-full lg:w-6/12 px-4 mb-4">
+                <label htmlFor="competance" className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                  Offres
+                </label>
+                <input
+                  id="Offres"
+                  type="text"
+                  value={offres}
+                  readOnly
+                  onChange={(e) => setOffres(e.target.value)}
+                  className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow w-full"
+                  placeholder="Vos Offres"
+                />
+                <p className="text-red-500 text-xs mt-1">{errors.offres}</p>
+              </div> */}
             </div>
 
             <div className="flex justify-end mt-6">

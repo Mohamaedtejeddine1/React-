@@ -65,12 +65,12 @@ export default function Navbar() {
     <div className="lg:flex flex-grow items-center">
       <ul className="flex flex-col lg:flex-row list-none ml-auto">
       <li className="nav-item">
-                       <Link
+                       {/* <Link
                            to="/Acceuil"
                            className="lg:text-white lg:hover:text-blueGray-200 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
                          >
                            Accueil
-                         </Link>
+                         </Link> */}
                        </li>
       <li className="nav-item">
         

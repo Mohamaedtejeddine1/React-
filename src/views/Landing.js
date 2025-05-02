@@ -97,7 +97,7 @@ export default function Landing() {
                         <i className="fas fa-award"></i>
                       </div> */}
                       <h6 className="text-xl font-semibold"><b > Titre:</b> {offre.titre}</h6>
-                      <p className="mt-2 mb-4 text-blueGray-500"><b> Description :</b>   {offre.description}</p>
+                      <p className="mt-2 mb-4 text-blueGray-500"><b> competance :</b>   {offre.competance}</p>
                       <p className="mt-2 mb-4 text-blueGray-500"><b>Domaine: </b>{offre.domaine}</p>
                       {/* <p className="mt-2 mb-4 text-blueGray-500"><b>competance:</b> {offre.competance}</p>
                       <p className="mt-2 mb-4 text-blueGray-500"><b>Domaine: </b>{offre.domaine}</p>

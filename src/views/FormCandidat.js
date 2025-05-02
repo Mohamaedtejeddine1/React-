@@ -53,10 +53,10 @@ export default function FormCandidat() {
       if (!userId) throw new Error("User not authenticated");
       if (!selectedOffreId) throw new Error("No offer selected");
 
-      // Create FormData for file upload
+   
       const formDataToSend = new FormData();
       
-      // Append all text fields
+
       Object.keys(formData).forEach(key => {
         if (key !== 'cvFile') {
           formDataToSend.append(key, formData[key]);
@@ -88,9 +88,7 @@ export default function FormCandidat() {
         Motivationletter: "",
         email: "",
         cvFile: null
-        
       });
-      toast.success(" Postulate successfully!");
     } catch (err) {
       setError(err.response?.data?.message || err.message || "Application failed");
       toast.error("Something went wrong. Please try again.");
@@ -125,9 +123,9 @@ export default function FormCandidat() {
                   </div>
                 )}
                 {success && (
-                 
+                  toast.success(" Postulate successfully!"),
                   <div className="bg-green border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"> 
-                     toast.success(" Postulate successfully!"),
+                  < h1 className="text-green "  > Postulate successfully!</h1>
                    </div>
                 )}
 
@@ -233,8 +231,8 @@ export default function FormCandidat() {
                           />
                         </div>
                       </div>
-                      <div className="w-full lg:w-6/12 px-4">
-                        <div className="relative w-full mb-3">
+                      {/* <div className="w-full lg:w-6/12 px-4">
+                         <div className="relative w-full mb-3">
                           <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
                             Motivation Letter
                           </label>
@@ -246,8 +244,8 @@ export default function FormCandidat() {
                             className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                             required
                           />
-                        </div>
-                      </div>
+                        </div> 
+                      </div> */}
                       <div className="w-full lg:w-6/12 px-4">
                         <div className="relative w-full mb-3">
                           <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">

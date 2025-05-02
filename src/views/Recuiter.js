@@ -4,7 +4,7 @@ import {
   getOffresByRecruteur, 
   createOffre, 
   updateOffre,
-  deleteOffre ,analyseCV
+  deleteOffre 
 } from "../services/ApiOffres";
 import Nav from "components/CandidatNav/RecuiterNav";
 import toast, { Toaster } from "react-hot-toast";
@@ -13,7 +13,7 @@ export default function Recruiter({ color }) {
   const [offres, setOffres] = useState([]);
   const [newoffres, setNewoffres] = useState({
     titre: "",
-    description: "",
+    competance: "",
     domaine: ""
   });
   const [editingId, setEditingId] = useState(null);
@@ -31,7 +31,7 @@ export default function Recruiter({ color }) {
       await createOffre(newoffres);
       toast.success("Job offer created successfully!", { id: toastId });
       getOffres();
-      setNewoffres({ titre: "", description: "", domaine: "" });
+      setNewoffres({ titre: "", competance: "", domaine: "" });
     } catch (error) {
       toast.error("Failed to create job offer.", { id: toastId });
       console.error("Error:", error);
@@ -42,7 +42,7 @@ export default function Recruiter({ color }) {
     setEditingId(offre._id);
     setNewoffres({
       titre: offre.titre,
-      description: offre.description,
+      competance: offre.competance,
       domaine: offre.domaine
     });
   };
@@ -54,7 +54,7 @@ export default function Recruiter({ color }) {
       toast.success("Job offer updated successfully!", { id: toastId });
       getOffres();
       setEditingId(null);
-      setNewoffres({ titre: "", description: "", domaine: "" });
+      setNewoffres({ titre: "", competance: "", domaine: "" });
     } catch (error) {
       toast.error("Failed to update job offer.", { id: toastId });
       console.error("Error:", error);
@@ -75,7 +75,7 @@ export default function Recruiter({ color }) {
 
   const cancelEdit = () => {
     setEditingId(null);
-    setNewoffres({ titre: "", description: "", domaine: "" });
+    setNewoffres({ titre: "", competance: "", domaine: "" });
   };
 
   const getOffres = async () => {
@@ -101,7 +101,6 @@ export default function Recruiter({ color }) {
   useEffect(() => {
     getOffres();
   }, []);
-  
 
   if (loading) return <div className="p-4">Loading...</div>;
 
@@ -137,7 +136,6 @@ export default function Recruiter({ color }) {
             duration: Infinity,
           }
         }}
-
       />
       
       <Nav />
@@ -177,11 +175,11 @@ export default function Recruiter({ color }) {
                 </div>
 
                 <div className="col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">competance</label>
                   <textarea
-                    placeholder="Description"
-                    name="description"
-                    value={newoffres.description}
+                    placeholder="competance"
+                    name="competance"
+                    value={newoffres.competance}
                     onChange={handleChange}
                     rows="5"
                     className="w-full border border-gray-300 px-4 py-2 rounded-md shadow-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -225,7 +223,7 @@ export default function Recruiter({ color }) {
           <table className="items-center w-full bg-transparent border-collapse">
             <thead>
               <tr>
-                {["Title", "Description", "Domain", "Actions"].map(header => (
+                {["Title", "competance", "Domain", "Actions"].map(header => (
                   <th key={header} className={`px-6 py-3 text-xs uppercase font-semibold text-left ${
                     color === "light"
                       ? "bg-blueGray-50 text-blueGray-500"
@@ -242,7 +240,7 @@ export default function Recruiter({ color }) {
                   <React.Fragment key={offre._id}>
                     <tr>
                       <td className="border-t-0 px-6 py-4 text-sm">{offre.titre}</td>
-                      <td className="border-t-0 px-6 py-4 text-sm">{offre.description}</td>
+                      <td className="border-t-0 px-6 py-4 text-sm">{offre.competance}</td>
                       <td className="border-t-0 px-6 py-4 text-sm">{offre.domaine}</td>
                       <td className="border-t-0 px-6 py-4 text-sm space-x-2">
                         <button
@@ -285,15 +283,14 @@ export default function Recruiter({ color }) {
                                     <p><strong>Skills:</strong> {candidate.competance}</p>
                                     <p><strong>Experience:</strong> {candidate.experiences}</p>
                                     <p><strong>Current Position:</strong> {candidate.currentPosition}</p>
-                                    <p><strong>Motivation Letter:</strong> {candidate.Motivationletter}</p>
                                     {candidate.cvLink && (
                                       <div className="mt-3">
                                         <a
                                           href={candidate.cvLink}
                                           target="_blank"
                                           rel="noopener noreferrer"
-                                          className="bg-lightBlue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
-                                        >
+                                          className="bg-lightBlue-600 hover:bg-blue-700 text-white font-bold uppercase text-sm px-6 py-2 rounded-md shadow-md transition duration-200"
+                                          >
                                           Download CV
                                         </a>
                                       </div>
