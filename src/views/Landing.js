@@ -10,15 +10,15 @@ export default function Landing() {
   const [offres, setOffres] = useState([]); // Initialize as an empty array
   const getOffres = async () => {
     try {
-        const response = await getAllOffres();
-        console.log("res api:", response); 
-        console.log("Data tji", response.data); 
+      const response = await getAllOffres();
+      console.log("res api:", response);
+      console.log("Data tji", response.data);
 
-        setOffres(response.data || []); 
+      setOffres(response.data || []);
     } catch (error) {
-        console.error("Error fetching offers:", error.response ? error.response.data : error.message);
+      console.error("Error fetching offers:", error.response ? error.response.data : error.message);
     }
-};
+  };
 
 
   useEffect(() => {
@@ -57,7 +57,7 @@ export default function Landing() {
             className="absolute top-0 w-full h-full bg-center bg-cover"
             style={{
               backgroundImage:
-              "url('https://static.vecteezy.com/ti/photos-gratuite/p1/2909918-nouveau-concept-de-gestion-des-ressources-humaines-rh-team-building-and-recruitment-photo.jpg')",
+                "url('https://static.vecteezy.com/ti/photos-gratuite/p1/2909918-nouveau-concept-de-gestion-des-ressources-humaines-rh-team-building-and-recruitment-photo.jpg')",
             }}
           >
             {/* <span
@@ -70,7 +70,7 @@ export default function Landing() {
               <div className="w-full lg:w-6/12 px-4 ml-auto mr-auto text-center">
                 <div className="pr-12">
                   <h1 className="text-white font-semibold text-5xl">
-              
+
                   </h1>
                   <p className="mt-4 text-lg text-blueGray-200">
                   </p>
@@ -82,7 +82,7 @@ export default function Landing() {
             className="top-auto bottom-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden h-70-px"
             style={{ transform: "translateZ(0)" }}
           >
-    
+
           </div>
         </div>
 
@@ -99,6 +99,10 @@ export default function Landing() {
                       <h6 className="text-xl font-semibold"><b > Titre:</b> {offre.titre}</h6>
                       <p className="mt-2 mb-4 text-blueGray-500"><b> competance :</b>   {offre.competance}</p>
                       <p className="mt-2 mb-4 text-blueGray-500"><b>Domaine: </b>{offre.domaine}</p>
+                      <p className="mt-2 mb-4  text-center text-lightBlue-600">
+                 {offre.recrut.email}
+                      </p>
+
                       {/* <p className="mt-2 mb-4 text-blueGray-500"><b>competance:</b> {offre.competance}</p>
                       <p className="mt-2 mb-4 text-blueGray-500"><b>Domaine: </b>{offre.domaine}</p>
                       <p className="mt-2 mb-4 text-blueGray-500"><b>Departement:</b>{offre.departement}</p> */}
@@ -109,7 +113,7 @@ export default function Landing() {
                       to={{
                         pathname: "/FormCandidat",
                         state: { selectedOffreId: offre._id },
-                        
+
                       }}
                       className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 flex items-center justify-center"
                     >
@@ -117,7 +121,7 @@ export default function Landing() {
                         Apply Now
                       </button>
                     </Link>
-              
+
                   </div>
 
 
@@ -134,12 +138,12 @@ export default function Landing() {
           </div>
         </section>
 
-    
 
 
-      
+
+
       </main>
-    <Footer /> 
+      <Footer />
     </>
   );
 }

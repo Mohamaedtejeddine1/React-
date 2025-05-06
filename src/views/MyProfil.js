@@ -27,12 +27,14 @@ export default function MyProfil() {
 
  
   useEffect(() => {
- 
+    
     const user = JSON.parse(localStorage.getItem("user"));
+    
     
     if (user) {
       setUsername(user.username || "");
       setEmail(user.email || "");
+      
       setCompetance(user.competance || "");
       setExperiences(user.experiences || "");
       setOffres(user.offres || "");
@@ -152,7 +154,7 @@ export default function MyProfil() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow w-full"
+                  className="border-0 px-3 py-3 placeholder-blueGray-600 text-blueGray-600 bg-white rounded text-sm shadow w-full"
                   placeholder="email@example.com"
                 />
                 <p className="text-red-500 text-xs mt-1">{errors.email}</p>
