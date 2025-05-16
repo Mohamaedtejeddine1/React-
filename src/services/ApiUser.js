@@ -54,3 +54,12 @@ export async function updateProfil(idUser, data) {
       
       });
 }
+export const getUserProfile = async (id) => {
+  try {
+    const response = await axios.get(`${apiurl}/getUserProfile/${id}`);
+    return response;
+  } catch (error) {
+    console.error("Error fetching user profile:", error);
+    throw error;
+  }
+};

@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { signin } from "../../services/ApiUser";
 import { useHistory } from "react-router-dom";
+import Footer from "components/Footers/Footer.js";
 
 export default function Login() {
-  const history = useHistory(); 
+  const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({
@@ -44,23 +45,23 @@ export default function Login() {
         if (response.data.token) {
           localStorage.setItem("token", response.data.token);
           console.log("Token stored:", localStorage.getItem("token")); // Vérifier si le token est bien stocké
-      } else {
+        } else {
           console.log("No token received from bacckend");
-      } 
+        }
 
 
         console.log("response ", response);
-        localStorage.setItem("user", JSON.stringify(response.data.user)); 
+        localStorage.setItem("user", JSON.stringify(response.data.user));
 
         toast.success("User signed in successfully");
         setEmail('');
         setPassword('');
-    
+
         if (response.data.user.role === "candidat") {
-          history.push("/landing"); 
-        }  
+          history.push("/landing");
+        }
         if (response.data.user.role === "recruteur") {
-          history.push("/recuiter"); 
+          history.push("/recuiter");
         }
       } catch (err) {
         console.log(err);
@@ -112,7 +113,7 @@ export default function Login() {
                       </div>
                     )}
                   </div>
-  
+
                   {/* Password Field */}
                   <div className="relative w-full mb-3">
                     <label
@@ -126,9 +127,8 @@ export default function Login() {
                       id="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className={`border px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 ${
-                        errors.password ? "border-red-500" : ""
-                      }`}
+                      className={`border px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 ${errors.password ? "border-red-500" : ""
+                        }`}
                       placeholder="Password"
                       required
                     />
@@ -138,21 +138,24 @@ export default function Login() {
                       </div>
                     )}
                   </div>
-  
-            
+
+
                   <div className="text-center mt-6">
                     <button
-                      className="bg-lightBlue-600 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none w-full ease-linear transition-all duration-150"
+                      className="bg-lightBlue-600 text-white  text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none w-full ease-linear transition-all duration-150"
                       type="submit"
                     >
                       Sign In
                     </button>
-                 
-                    <div className="mt-3">
-                      <Link to="/auth/register" className="text-lightBlue-600 hover:underline">
-                        <small>Create new account</small>
-                      </Link>
-                    </div>
+                    <div className="flex justify-between mt-6 text-sm">
+            <Link to="/Forgotpassword" className="text-lightBlue-600 hover:underline">
+              Forgot password?
+            </Link>
+            <Link to="/auth/register" className="text-lightBlue-600 hover:underline">
+              Create account
+            </Link>
+          </div>
+
                   </div>
                 </form>
               </div>
@@ -172,8 +175,10 @@ export default function Login() {
           </div>
         </div>
       </div>
+   
     </>
+  
   );
-  
-  
+
+
 }

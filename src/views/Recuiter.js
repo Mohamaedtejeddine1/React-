@@ -199,12 +199,12 @@ export default function Recruiter({ color = "light" }) {
 
                 <div className="col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">Skills</label>
-                  <textarea
+                  <input
                     name="competance"
                     value={newOffre.competance}
                     onChange={handleChange}
-                    rows="5"
-                    className="w-full border border-gray-300 px-4 py-2 rounded-md shadow-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-400"
+            
+                    className="w-full border border-gray-300 px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                   />
                 </div>
 
@@ -217,13 +217,13 @@ export default function Recruiter({ color = "light" }) {
                       >
                         Update
                       </button>
-                      <button
+                      &nbsp;&nbsp;&nbsp;     <button
                         onClick={cancelEdit}
-                        className="bg-gray-500 hover:bg-gray-600 text-white font-bold text-sm px-6 py-2 rounded-md shadow-md"
+                        className="bg-lightBlue-600 hover:bg-gray-600 text-white font-bold text-sm px-6 py-2 rounded-md shadow-md"
                       >
                         Cancel
                       </button>
-                    </>
+                      &nbsp;&nbsp;&nbsp;   </>
                   ) : (
                     <button
                       onClick={handleAddOffre}
@@ -255,7 +255,7 @@ export default function Recruiter({ color = "light" }) {
                   <th 
                     key={header}
                     className={`px-6 py-3 text-xs uppercase font-semibold text-left ${
-                      color === "light" ? "bg-blueGray-50 text-blueGray-500" : "bg-lightBlue-800 text-lightBlue-300"
+                      color === "light" ? "bg-lightBlue-600 text-bold text-white" : "bg-lightBlue-800 text-lightBlue-300"
                     }`}
                   >
                     {header}
@@ -276,15 +276,15 @@ export default function Recruiter({ color = "light" }) {
                           onClick={() => toggleCandidates(offre._id)}
                           className="text-white bg-lightBlue-600 font-bold text-xs px-4 py-2 rounded shadow hover:shadow-md"
                         >
-                          {visibleCandidates[offre._id] ? "Hide" : "View"} Candidates
+                          {visibleCandidates[offre._id] ? "Hide" : "View" } Candidates
                         </button>
-                        <button
+                  &nbsp;&nbsp;&nbsp;       <button
                           onClick={() => handleEdit(offre)}
                           className="text-white bg-lightBlue-600 font-bold text-xs px-4 py-2 rounded shadow hover:shadow-md"
                         >
                           Edit
                         </button>
-                        <button
+                        &nbsp;&nbsp;&nbsp;    <button
                           onClick={() => handleDelete(offre._id)}
                           className="text-white bg-red-600 font-bold text-xs px-4 py-2 rounded shadow hover:shadow-md"
                         >
@@ -296,7 +296,7 @@ export default function Recruiter({ color = "light" }) {
                       <tr>
                         <td colSpan="4" className="px-6 py-4 bg-gray-50">
                           <div className="flex justify-between items-center mb-4">
-                            <h4 className="text-lg font-semibold">Candidates</h4>
+                            <h4 className="text-lg font-semibold">List of Candidates</h4>
                             <button
                               onClick={toggleSortOrder}
                               className="text-white bg-lightBlue-600 font-bold text-xs px-4 py-2 rounded shadow hover:shadow-md"
@@ -313,43 +313,46 @@ export default function Recruiter({ color = "light" }) {
                                     {candidate.cvAnalysis?.score && (
                                       <span className={`px-2 py-1 rounded-full text-xs font-bold ${
                                         candidate.cvAnalysis.score >= 70 ? 'bg-green-100 text-green-800' :
-                                        candidate.cvAnalysis.score >= 50 ? 'bg-yellow-100 text-yellow-800' :
-                                        'bg-red-100 text-red-800'
+                                        candidate.cvAnalysis.score >= 50 ? 'bg-yellow-100 text-yellow-500' :
+                                        'text-red-500'
                                       }`}>
                                         Score: {candidate.cvAnalysis.score}
                                       </span>
                                     )}
                                   </div>
-                                  <div className="text-sm text-gray-800 space-y-1">
-                                    <p><strong>Email:</strong> {candidate.email}</p>
-                                    <p><strong>Phone:</strong> {candidate.telephone}</p>
-                                    <p><strong>Current Position:</strong> {candidate.currentPosition}</p>
-                                    <p><strong>Experience:</strong> {candidate.experiences}</p>
-                                    {candidate.cvLink && (
-                                      <div className="mt-2">
-                                        <a
-                                          href={candidate.cvLink}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                          className="inline-block bg-lightBlue-600 hover:bg-lightBlue-700 text-white font-bold text-sm px-4 py-1 rounded shadow"
-                                        >
-                                          View CV
-                                        </a>
-                                      </div>
-                                    )}
+                                
                                     {candidate.cvAnalysis && (
                                       <div className="mt-3 border-t pt-3">
-                                        <h5 className="font-semibold text-gray-700 mb-1">CV Analysis</h5>
+                                        {/* <h5 className="font-semibold text-gray-700 mb-1">CV Analysis</h5> */}
+                                        <div className="mt-2">
+                                          {/* <p className="font-medium">Summary:</p> */}
+                                          <p className="text-gray-500">{candidate.cvAnalysis.summary || "No analysis available"}</p>
+                                        </div>
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                                           <p><strong>Matched Skills:</strong> {candidate.cvAnalysis.matchedSkills?.join(", ") || "None"}</p>
                                           <p><strong>Missing Skills:</strong> {candidate.cvAnalysis.missingSkills?.join(", ") || "None"}</p>
                                           <p><strong>Compatibility:</strong> {candidate.cvAnalysis.isCompatible ? "True" : "False"}</p>
                                           <p><strong>Score:</strong> {candidate.cvAnalysis.score || "N/A"}</p>
                                         </div>
-                                        <div className="mt-2">
-                                          <p className="font-medium">Summary:</p>
-                                          <p className="text-gray-700">{candidate.cvAnalysis.summary || "No analysis available"}</p>
-                                        </div>
+                                 
+                                      </div>
+                                      
+                                    )}
+                                      <div className="text-sm text-gray-800 space-y-1">
+                                    <p><strong>Email:</strong> {candidate.email}</p>
+                                    <p><strong>Phone:</strong> {candidate.telephone}</p>
+                                    <p><strong>Current Position:</strong> {candidate.currentPosition}</p>
+                                    <p><strong>Experience:</strong> {candidate.experiences}</p>
+                                    {candidate.cvLink && (
+                                      <div className="mt-2">
+                                      <br/>  <a
+                                          href={candidate.cvLink}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="bg-lightBlue-600 hover:bg-lightBlue-700 text-white font-bold text-sm px-6 py-2 rounded-md shadow-md"
+                                          >
+                                          View CV
+                                        </a>
                                       </div>
                                     )}
                                   </div>

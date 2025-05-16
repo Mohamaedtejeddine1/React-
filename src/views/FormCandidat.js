@@ -10,13 +10,13 @@ export default function FormCandidat() {
   const { selectedOffreId } = location.state || {};
 
   const [formData, setFormData] = useState({
-    username: "",
+
     competance: "",
     experiences: "",
     telephone: "",
     email: "",
     Motivationletter: "",
-    currentPosition: "",
+    location: "",
     cvFile: null
   });
 
@@ -75,19 +75,19 @@ export default function FormCandidat() {
       );
       setSuccess(true);
       setFormData({
-        username: "",
+    
         competance: "",
         experiences: "",
         telephone: "",
-        currentPosition: "",
-        Motivationletter: "",
+        location: "",
+
         email: "",
         cvFile: null
       });
-      toast.success("Candidature envoyée avec succès !");
+      toast.success(" Postulate successfuly !");
     } catch (err) {
       setError(err.response?.data?.message || err.message || "Application failed");
-      toast.error("Une erreur s’est produite. Veuillez réessayer.");
+      toast.error("Something Woring ...");
     } finally {
       setIsSubmitting(false);
     }}
@@ -110,12 +110,14 @@ export default function FormCandidat() {
               <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
                 <form onSubmit={handleSubmit}>
                   {[
-                    { name: "username", label: "Nom", type: "text" },
+                   
                     { name: "email", label: "Email", type: "email" },
                     { name: "telephone", label: "Téléphone", type: "text" },
-                    { name: "competance", label: "Compétences", type: "text" },
-                    { name: "currentPosition", label: "Poste Actuel", type: "text" },
+                    { name: "competance", label: "skills", type: "text" },
                     { name: "experiences", label: "Expérience", type: "text" },
+               { name: "location", label: "location", type: "text" },
+
+                    
                   ].map(({ name, label, type }) => (
                     <div key={name} className="relative w-full mb-3">
                       <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlFor={name}>
@@ -155,7 +157,7 @@ export default function FormCandidat() {
                       disabled={isSubmitting}
                       className="bg-lightBlue-600 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none w-full ease-linear transition-all duration-150"
                     >
-                      {isSubmitting ? "Envoi en cours..." : "Postuler"}
+                      {isSubmitting ? "Sending ..." : "Postuler"}
                     </button>
                   </div>
                 </form>
