@@ -14,44 +14,50 @@ export default function Recruiter({ color = "light" }) {
   const [newOffre, setNewOffre] = useState({
     titre: "",
     competance: "",
-    domaine: ""
+    domaine: "",
+    description: "",
+    status: "open" // Added status field with default value
   });
   const [editingId, setEditingId] = useState(null);
   const [visibleCandidates, setVisibleCandidates] = useState({});
   const [loading, setLoading] = useState(true);
-  const [sortOrder, setSortOrder] = useState('desc'); // 'desc' for highest first, 'asc' for lowest
+  const [sortOrder, setSortOrder] = useState('desc');
 
-  // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewOffre(prev => ({ ...prev, [name]: value }));
   };
 
-  // Create new job offer
   const handleAddOffre = async () => {
     const toastId = toast.loading("Creating job offer...");
     try {
       await createOffre(newOffre);
       toast.success("Job offer created successfully!", { id: toastId });
       getOffres();
-      setNewOffre({ titre: "", competance: "", domaine: "" });
+      setNewOffre({ 
+        titre: "", 
+        competance: "", 
+        domaine: "",
+        description: "",
+        status: "open"
+      });
     } catch (error) {
       toast.error("Failed to create job offer.", { id: toastId });
       console.error("Error:", error);
     }
   };
 
-  // Set up edit mode
   const handleEdit = (offre) => {
     setEditingId(offre._id);
     setNewOffre({
       titre: offre.titre,
       competance: offre.competance,
-      domaine: offre.domaine
+      domaine: offre.domaine,
+      description: offre.description || "",
+      status: offre.status || "open"
     });
   };
 
-  // Update existing offer
   const handleUpdate = async () => {
     const toastId = toast.loading("Updating job offer...");
     try {
@@ -59,14 +65,19 @@ export default function Recruiter({ color = "light" }) {
       toast.success("Job offer updated successfully!", { id: toastId });
       getOffres();
       setEditingId(null);
-      setNewOffre({ titre: "", competance: "", domaine: "" });
+      setNewOffre({ 
+        titre: "", 
+        competance: "", 
+        domaine: "",
+        description: "",
+        status: "open"
+      });
     } catch (error) {
       toast.error("Failed to update job offer.", { id: toastId });
       console.error("Error:", error);
     }
   };
 
-  // Delete job offer
   const handleDelete = async (id) => {
     const toastId = toast.loading("Deleting job offer...");
     try {
@@ -79,13 +90,17 @@ export default function Recruiter({ color = "light" }) {
     }
   };
 
-  // Cancel edit mode
   const cancelEdit = () => {
     setEditingId(null);
-    setNewOffre({ titre: "", competance: "", domaine: "" });
+    setNewOffre({ 
+      titre: "", 
+      competance: "", 
+      domaine: "",
+      description: "",
+      status: "open"
+    });
   };
 
-  // Fetch job offers
   const getOffres = async () => {
     setLoading(true);
     try {
@@ -99,7 +114,6 @@ export default function Recruiter({ color = "light" }) {
     }
   };
 
-  // Toggle candidate visibility for an offer
   const toggleCandidates = (offreId) => {
     setVisibleCandidates(prev => ({
       ...prev,
@@ -107,12 +121,10 @@ export default function Recruiter({ color = "light" }) {
     }));
   };
 
-  // Toggle sort order
   const toggleSortOrder = () => {
     setSortOrder(prev => prev === 'desc' ? 'asc' : 'desc');
   };
 
-  // Process candidates - sort by score
   const getSortedCandidates = (candidates) => {
     if (!candidates || candidates.length === 0) return [];
     
@@ -121,6 +133,13 @@ export default function Recruiter({ color = "light" }) {
       const scoreB = b.cvAnalysis?.score ? parseInt(b.cvAnalysis.score) : 0;
       return sortOrder === 'desc' ? scoreB - scoreA : scoreA - scoreB;
     });
+  };
+  const splitCandidates = (candidates) => {
+    const half = Math.ceil(candidates.length / 2);
+    return {
+      left: candidates.slice(0, half),
+      right: candidates.slice(half)
+    };
   };
 
   useEffect(() => {
@@ -185,8 +204,26 @@ export default function Recruiter({ color = "light" }) {
                     className="w-full border border-gray-300 px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                   />
                 </div>
-
                 <div className="col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                  <textarea
+                    name="description"
+                    value={newOffre.description}
+                    onChange={handleChange}
+                    rows="2"
+                    className="w-full border border-gray-300 px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  />
+                </div>
+                           <div className="col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Skills</label>
+                  <input
+                    name="competance"
+                    value={newOffre.competance}
+                    onChange={handleChange}
+                    className="w-full border border-gray-300 px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  />
+                </div>
+                     <div className="col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">Domain</label>
                   <input
                     type="text"
@@ -198,14 +235,16 @@ export default function Recruiter({ color = "light" }) {
                 </div>
 
                 <div className="col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Skills</label>
-                  <input
-                    name="competance"
-                    value={newOffre.competance}
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                  <select
+                    name="status"
+                    value={newOffre.status}
                     onChange={handleChange}
-            
                     className="w-full border border-gray-300 px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  />
+                  >
+                    <option value="open">Open</option>
+                    <option value="closed">Closed</option>
+                  </select>
                 </div>
 
                 <div className="col-span-2 text-right mt-4 space-x-3">
@@ -217,13 +256,13 @@ export default function Recruiter({ color = "light" }) {
                       >
                         Update
                       </button>
-                      &nbsp;&nbsp;&nbsp;     <button
+                     &nbsp;&nbsp;&nbsp; <button
                         onClick={cancelEdit}
                         className="bg-lightBlue-600 hover:bg-gray-600 text-white font-bold text-sm px-6 py-2 rounded-md shadow-md"
                       >
                         Cancel
                       </button>
-                      &nbsp;&nbsp;&nbsp;   </>
+                    </>
                   ) : (
                     <button
                       onClick={handleAddOffre}
@@ -251,7 +290,7 @@ export default function Recruiter({ color = "light" }) {
           <table className="items-center w-full bg-transparent border-collapse">
             <thead>
               <tr>
-                {["Title", "Skills", "Domain", "Actions"].map(header => (
+                {["Title", "Skills", "Domain", "Status", "Actions"].map(header => (
                   <th 
                     key={header}
                     className={`px-6 py-3 text-xs uppercase font-semibold text-left ${
@@ -271,20 +310,29 @@ export default function Recruiter({ color = "light" }) {
                       <td className="px-6 py-4 text-sm">{offre.titre}</td>
                       <td className="px-6 py-4 text-sm">{offre.competance}</td>
                       <td className="px-6 py-4 text-sm">{offre.domaine}</td>
+                      <td className="px-6 py-4 text-sm">
+                        <span className={`px-2 py-1 rounded-full text-xs ${
+                          offre.status === "open" 
+                            ? "bg-green-100 text-green-800" 
+                            : "bg-red-100 text-red-800"
+                        }`}>
+                          {offre.status === "open" ? "Open" : "Closed"}
+                        </span>
+                      </td>
                       <td className="px-6 py-4 text-sm space-x-2">
                         <button
                           onClick={() => toggleCandidates(offre._id)}
                           className="text-white bg-lightBlue-600 font-bold text-xs px-4 py-2 rounded shadow hover:shadow-md"
                         >
-                          {visibleCandidates[offre._id] ? "Hide" : "View" } Candidates
+                          {visibleCandidates[offre._id] ? "Hide" : "View"} Candidates
                         </button>
-                  &nbsp;&nbsp;&nbsp;       <button
+                     &nbsp;&nbsp;&nbsp;   <button
                           onClick={() => handleEdit(offre)}
                           className="text-white bg-lightBlue-600 font-bold text-xs px-4 py-2 rounded shadow hover:shadow-md"
                         >
                           Edit
                         </button>
-                        &nbsp;&nbsp;&nbsp;    <button
+                       &nbsp;&nbsp; <button
                           onClick={() => handleDelete(offre._id)}
                           className="text-white bg-red-600 font-bold text-xs px-4 py-2 rounded shadow hover:shadow-md"
                         >
@@ -294,76 +342,66 @@ export default function Recruiter({ color = "light" }) {
                     </tr>
                     {visibleCandidates[offre._id] && (
                       <tr>
-                        <td colSpan="4" className="px-6 py-4 bg-gray-50">
-                          <div className="flex justify-between items-center mb-4">
-                            <h4 className="text-lg font-semibold">List of Candidates</h4>
-                            <button
-                              onClick={toggleSortOrder}
-                              className="text-white bg-lightBlue-600 font-bold text-xs px-4 py-2 rounded shadow hover:shadow-md"
-                            >
-                              {sortOrder === 'desc' ? 'Highest Scores ↓' : 'Lowest Scores ↑'}
-                            </button>
-                          </div>
-                          <div className="grid grid-cols-1 gap-4">
-                            {getSortedCandidates(offre.candidats).length > 0 ? (
-                              getSortedCandidates(offre.candidats).map((candidate) => (
-                                <div key={candidate._id} className="border rounded-lg p-4 bg-white shadow-sm">
-                                  <div className="flex justify-between items-center mb-2">
-                                    <h4 className="text-lg font-bold text-blue-800">{candidate.username}</h4>
-                                    {candidate.cvAnalysis?.score && (
-                                      <span className={`px-2 py-1 rounded-full text-xs font-bold ${
-                                        candidate.cvAnalysis.score >= 70 ? 'bg-green-100 text-green-800' :
-                                        candidate.cvAnalysis.score >= 50 ? 'bg-yellow-100 text-yellow-500' :
-                                        'text-red-500'
-                                      }`}>
-                                        Score: {candidate.cvAnalysis.score}
-                                      </span>
-                                    )}
-                                  </div>
-                                
-                                    {candidate.cvAnalysis && (
-                                      <div className="mt-3 border-t pt-3">
-                                        {/* <h5 className="font-semibold text-gray-700 mb-1">CV Analysis</h5> */}
-                                        <div className="mt-2">
-                                          {/* <p className="font-medium">Summary:</p> */}
-                                          <p className="text-gray-500">{candidate.cvAnalysis.summary || "No analysis available"}</p>
-                                        </div>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                                          <p><strong>Matched Skills:</strong> {candidate.cvAnalysis.matchedSkills?.join(", ") || "None"}</p>
-                                          <p><strong>Missing Skills:</strong> {candidate.cvAnalysis.missingSkills?.join(", ") || "None"}</p>
-                                          <p><strong>Compatibility:</strong> {candidate.cvAnalysis.isCompatible ? "True" : "False"}</p>
-                                          <p><strong>Score:</strong> {candidate.cvAnalysis.score || "N/A"}</p>
-                                        </div>
-                                 
-                                      </div>
-                                      
-                                    )}
-                                      <div className="text-sm text-gray-800 space-y-1">
-                                    <p><strong>Email:</strong> {candidate.email}</p>
-                                    <p><strong>Phone:</strong> {candidate.telephone}</p>
-                                    <p><strong>Current Position:</strong> {candidate.currentPosition}</p>
-                                    <p><strong>Experience:</strong> {candidate.experiences}</p>
-                                    {candidate.cvLink && (
-                                      <div className="mt-2">
-                                      <br/>  <a
-                                          href={candidate.cvLink}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                          className="bg-lightBlue-600 hover:bg-lightBlue-700 text-white font-bold text-sm px-6 py-2 rounded-md shadow-md"
-                                          >
-                                          View CV
-                                        </a>
-                                      </div>
-                                    )}
-                                  </div>
-                                </div>
-                              ))
-                            ) : (
-                              <div className="text-center py-4 text-gray-500">
-                                No candidates have applied yet
+                        <td colSpan="5" className="px-6 py-4 bg-gray-50">
+                          <div className="mb-4">
+                            {offre.description && (
+                              <div className="mb-4">
+                                <h4 className="text-sm font-semibold mb-1">Job Description:</h4>
+                                <p className="text-sm text-gray-600">{offre.description}</p>
                               </div>
                             )}
+                            <div className="flex justify-between items-center">
+                              <h4 className="text-lg font-semibold">List of Candidates</h4>
+                              <button
+                                onClick={toggleSortOrder}
+                                className="text-white bg-lightBlue-600 font-bold text-xs px-4 py-2 rounded shadow hover:shadow-md"
+                              >
+                                {sortOrder === 'desc' ? 'Highest Scores ↓' : 'Lowest Scores ↑'}
+                              </button>
+                            </div>
                           </div>
+                          
+                          {/* Split candidate display */}
+                          <div className="flex flex-col md:flex-row gap-6">
+                            {(() => {
+                              const sortedCandidates = getSortedCandidates(offre.candidats);
+                              const { left, right } = splitCandidates(sortedCandidates);
+                              
+                              return (
+                                <>
+                                  <div className="flex-1 space-y-4">
+                                    {left.length > 0 ? (
+                                      left.map((candidate) => (
+                                        <CandidateCard key={candidate._id} candidate={candidate} />
+                                      ))
+                                    ) : (
+                                      <div className="text-center py-4 text-gray-500">
+                                        No candidates in this column
+                                      </div>
+                                    )}
+                                  </div>
+                                  
+                                  <div className="flex-1 space-y-4">
+                                    {right.length > 0 ? (
+                                      right.map((candidate) => (
+                                        <CandidateCard key={candidate._id} candidate={candidate} />
+                                      ))
+                                    ) : (
+                                      <div className="text-center py-4 text-gray-500">
+                                        No candidates in this column
+                                      </div>
+                                    )}
+                                  </div>
+                                </>
+                              );
+                            })()}
+                          </div>
+                          
+                          {offre.candidats?.length === 0 && (
+                            <div className="text-center py-4 text-gray-500">
+                              No candidates have applied yet
+                            </div>
+                          )}
                         </td>
                       </tr>
                     )}
@@ -371,7 +409,7 @@ export default function Recruiter({ color = "light" }) {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="4" className="text-center py-4 text-gray-500">
+                  <td colSpan="5" className="text-center py-4 text-gray-500">
                     No job offers found
                   </td>
                 </tr>
@@ -381,6 +419,61 @@ export default function Recruiter({ color = "light" }) {
         </div>
       </div>
     </>
+  );
+}
+
+// Extracted Candidate Card Component for better readability
+function CandidateCard({ candidate }) {
+  return (
+    <div className="border rounded-lg p-4 bg-white shadow-sm hover:shadow-md transition-shadow">
+      <div className="flex justify-between items-center mb-2">
+        <h4 style={{ fontSize: '1.125rem', fontWeight: 'bold', color: 'green' }}>
+          Candidate Information
+        </h4>
+        {candidate.cvAnalysis?.score && (
+          <span className={`px-2 py-1 rounded-full text-xs font-bold ${
+            candidate.cvAnalysis.score >= 70 ? 'bg-lightBlue-200 text-green-800' :
+            candidate.cvAnalysis.score >= 50 ? 'bg-red-200 text-yellow-500' :
+            'text-red-500'
+          }`}>
+            Score: {candidate.cvAnalysis.score}
+          </span>
+        )}
+      </div>
+      
+      <div className="text-sm text-gray-800 space-y-1">
+        <p><strong>Email:</strong> {candidate.email}</p>
+        <p><strong>Phone:</strong> {candidate.telephone}</p>
+        <p><strong>Experience:</strong> {candidate.experiences}</p>
+        <p><strong>competance:</strong> {candidate.competance}</p>
+      </div>
+      
+      {candidate.cvAnalysis && (
+        <div className="mt-3 border-t pt-3">
+          <div className="mt-2">
+            <p className="text-white-500 bg-lightBlue-200">{candidate.cvAnalysis.summary || "No analysis available"}</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
+            <p><strong>Matched Skills:</strong> {candidate.cvAnalysis.matchedSkills?.join(", ") || "None"}</p>
+            <p><strong>Missing Skills:</strong> {candidate.cvAnalysis.missingSkills?.join(", ") || "None"}</p>
+            <p><strong>Compatibility:</strong> {candidate.cvAnalysis.isCompatible ? "True" : "False"}</p>
+          </div>
+        </div>
+      )}
+      
+      {candidate.cvLink && (
+        <div className="mt-3 text-center">
+          <a
+            href={candidate.cvLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block bg-lightBlue-600 hover:bg-lightBlue-700 text-white font-bold text-sm px-4 py-2 rounded-md shadow-md"
+          >
+            View CV
+          </a>
+        </div>
+      )}
+    </div>
   );
 }
 

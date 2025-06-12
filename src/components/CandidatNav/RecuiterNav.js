@@ -80,17 +80,38 @@ export default function Navbar() {
                   Accueil
                 </Link>
               </li> */}
-              <li className="nav-item">
+             <li className="nav-item">
                 <Link
-                  to="/MyProfil"
+                  to="/SetDecision"
                   className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
-                >
+                >Decision
+                 
+                </Link>
+              </li> 
+              
+               <li className="nav-item">
+                <Link
+                  to="/InterviewManager"
+ className="px-4 py-2 mx-2  rounded-md flex items-center text-xs uppercase font-bold leading-snug text-white hover:bg-white hover:text-gray-800 transition duration-300"                >
+                  interview
+                </Link>
+              </li>
+              
+               <li className="nav-item">
+                <Link
+                  to="/ProfileRh"
+ className="px-4 py-2 mx-2  rounded-md flex items-center text-xs uppercase font-bold leading-snug text-white  hover:bg-white hover:text-gray-800 transition duration-300"                >
                   Profil
                 </Link>
               </li>
+              
+
 
               <li className="nav-item">
-                <button onClick={handleLogout} className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75" href="#pablo">
+                <button onClick={handleLogout} 
+  className="bg-lightBlue-400 px-4 py-2 mx-2 border border-white border-[2px]  rounded-md flex items-center space-x-2 text-xs uppercase font-bold text-white hover:bg-white hover:text-gray-800 transition duration-300 ease-in-out"
+
+>
                   Logout
                 </button >
               </li>

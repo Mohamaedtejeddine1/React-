@@ -10,6 +10,7 @@ export default function Register() {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    
 
     const formValidation = () => {
         let status = true;
@@ -48,7 +49,7 @@ export default function Register() {
                 setEmail("");
                 setPassword("");
                 setRole("candidat"); // Reset to default role
-                history.push("/auth/login");
+                history.push("/auth/login"); 
             } catch (err) {
                 toast.error(err.response.data.message);
             }

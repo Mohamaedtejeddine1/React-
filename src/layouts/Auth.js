@@ -28,7 +28,7 @@ export default function Auth() {
             style={{
               backgroundImage:
               
-                "url(" + require("assets/img/bg2.png").default + ")",
+                "url(" + require("assets/img/blue.png").default + ")",
             }}
           ></div> 
           <Switch>

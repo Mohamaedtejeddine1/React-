@@ -21,12 +21,16 @@ import VerifyEmailPage from "views/VerifyEmailPage.js";
 import Forgotpassword from "views/Forgotpassword.js"
 import ResetPassword from "views/ResetPassword.js"
 import InterviewManager from "views/InterviewManager.js"
-
-
+import CreateInterviewPage from "views/CreateInterviewPage.js"
+import UserStates from "views/admin/UserStates.js"
+import NotificationsPage from "views/NotificationsPage.js"
+import Calender from "views/Calender.js"
+import Gemini from "views/Gemini.js"
+import SetDecision from "views/SetDecision.js"
 import Recuiter from "views/Recuiter.js"
 import Navbar from "components/CandidatNav/Nav";
 import FormCandidat from "views/FormCandidat";
-
+import ProfileRh from "views/ProfileRh"
 ReactDOM.render(
   <BrowserRouter>
   
@@ -47,11 +51,17 @@ ReactDOM.render(
      < Route path="/ResetPassword" exact component={ResetPassword} />
      < Route path="/Forgotpassword" exact component={Forgotpassword} />
      < Route path="/VerifyEmailPage" exact component={VerifyEmailPage} />
-   
-     <   Route path="/InterviewManager" exact component={InterviewManager} />
- 
+   <   Route path="/InterviewManager" exact component={InterviewManager} />
+     <   Route path="/CreateInterviewPage" exact component={CreateInterviewPage} />
+      <   Route path="/NotificationsPage" exact component={NotificationsPage} />
+      <   Route path="/UserStates" exact component={UserStates} />
+       <   Route path="/Calender" exact component={Calender} />
+        <   Route path="/Gemini" exact component={Gemini} />
+          <   Route path="/SetDecision" exact component={SetDecision} />
+     
+         <   Route path="/ProfileRh" exact component={ProfileRh} />
      Acceuil
-      <Route path="/" exact component={Welcome} />
+      <Route path="/" exact component={Acceuil} />
     
       {/* add redirect for first page */}
       <Redirect from="*" to="/" />

@@ -116,6 +116,13 @@ export default function Acceuil() {
                     Automate CV screening, track applications in real-time,
                     and deliver a smooth experience for both recruiters and candidates.
                   </p>
+                <Link
+  to="/auth/register"
+className="text-white text-xl font-bold bg-lightBlue-600 border border-lightBlue-600 rounded-lg px-6 py-2 mt-4 inline-block hover:bg-red-200 hover:text-lightBlue-600 transition"
+>
+  Get Started
+</Link>
+
                 </div>
 
               </div>
@@ -270,7 +277,65 @@ export default function Acceuil() {
             </div>
           </div>
         </section>
+<section className="py-20 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold text-gray-800 mb-4">
+                Why Choose Our Platform?
+              </h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Discover the features that make recruitment effortless and effective
+              </p>
+            </div>
 
+            <div className="flex flex-wrap -mx-4">
+              <div className="w-full md:w-4/12 px-4 mb-8">
+                <div className="bg-white p-8 rounded-lg shadow-lg border card-hover">
+                  <div className="text-lightBlue-600 mb-4">
+                    <i className="fas fa-robot text-4xl"></i>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-800 mb-3">
+                  AI CV Analysis
+                  </h3>
+                  <p className="text-gray-600">
+                  Analyze candidate CVs using Google's Gemini API to extract key skills 
+        and evaluate compatibility
+                  </p>
+                </div>
+              </div>
+
+              <div className="w-full md:w-4/12 px-4 mb-8">
+                <div className="bg-white p-8 rounded-lg shadow-lg border card-hover">
+                  <div className="text-lightBlue-600 mb-4">
+                    <i className="fas fa-chart-line text-4xl"></i>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-800 mb-3">
+                    Real-time Analytics
+                  </h3>
+                  <p className="text-gray-600">
+                    Track recruitment metrics, monitor application progress, 
+                    and make data-driven decisions.
+                  </p>
+                </div>
+              </div>
+
+              <div className="w-full md:w-4/12 px-4 mb-8">
+                <div className="bg-white p-8 rounded-lg shadow-lg border card-hover">
+                  <div className="text-lightBlue-600 mb-4">
+                    <i className="fas fa-users text-4xl"></i>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-800 mb-3">
+                    Easy Collaboration
+                  </h3>
+                  <p className="text-gray-600">
+                    Enable smooth collaboration between HR teams, hiring managers, 
+                    and candidates throughout the process.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
         <section className="pt-20 pb-48">
           {/* <div className="container mx-auto px-4">
             <div className="flex flex-wrap justify-center text-center mb-24">

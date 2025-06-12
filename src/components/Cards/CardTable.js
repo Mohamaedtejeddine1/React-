@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { getAllUsers, deleteUserById, createUser, updateUserById } from "../../services/ApiUser";
-
+import { getAllUsers, deleteUserById, createUser } from "../../services/ApiUser";
+// New function to fetch counts from backend API
+import axios from "axios";
 export default function CardTable({ color }) {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [userCounts, setUserCounts] = useState({ candidatCount: 0, recruteurCount: 0 });
 
   const getUsers = async () => {
     try {
@@ -15,18 +17,29 @@ export default function CardTable({ color }) {
       console.error("Error fetching users:", error.response ? error.response.data : error.message);
     }
   };
+ 
+  // Fetch counts for candidat and recruteur
+  const getUserCounts = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/users/getCounts");
+      setUserCounts(res.data);
+    } catch (error) {
+      console.error("Error fetching user counts:", error);
+    }
+  };
 
   // Delete a user
   const deleteUser = async (id) => {
     try {
       await deleteUserById(id);
       getUsers();
+      getUserCounts(); // refresh counts after delete
     } catch (error) {
       console.error("Error deleting user:", error);
     }
   };
 
-  // Add user
+  
   const [newUser, setNewUser] = useState({
     username: "",
     email: "",
@@ -43,23 +56,14 @@ export default function CardTable({ color }) {
     try {
       await createUser(newUser);
       getUsers();
+      getUserCounts(); // refresh counts after add
       setNewUser({ username: "", email: "", role: "", password: "" });
     } catch (error) {
       console.log(error);
     }
   };
 
-  // Update user
-  // const updateNewUser = async (newUser, id) => {
-  //   try {
-  //     await updateUserById(newUser, id);
-  //     getUsers();
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-
+  // Edit user handler
   const handleEditUser = (user) => {
     setSelectedUser(user);
     setNewUser({
@@ -72,6 +76,7 @@ export default function CardTable({ color }) {
 
   useEffect(() => {
     getUsers();
+    getUserCounts();  // fetch counts on mount
   }, []);
 
   return (
@@ -85,7 +90,7 @@ export default function CardTable({ color }) {
         <div className="rounded-t mb-0 px-4 py-3 border-0">
           <div className="flex flex-wrap items-center">
             <div className="relative w-full px-4 max-w-full flex-grow flex-1">
-              <h3  
+              <h3
                 className={
                   "font-semibold text-lg  " +
                   (color === "light" ? "text-blueGray-700" : "text-white")
@@ -93,6 +98,18 @@ export default function CardTable({ color }) {
               >
                 List Users
               </h3>
+
+              {/* NEW: Display user counts here */}
+              <div
+                className={
+                  "mb-4 p-3 rounded " +
+                  (color === "light" ? "bg-blueGray-50 text-blueGray-700" : "bg-lightBlue-800 text-lightBlue-300")
+                }
+              >
+                <p><strong>Candidates:</strong> {userCounts.candidatCount}</p>
+                <p><strong>Recruiters:</strong> {userCounts.recruteurCount}</p>
+              </div>
+
               <div className="">
                 <input
                   type="text"
@@ -118,8 +135,8 @@ export default function CardTable({ color }) {
                   onChange={handleChange}
                   className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring ease-linear transition-all duration-150"
                 />
-                  &nbsp; &nbsp; 
-                 <input
+                &nbsp; &nbsp;
+                <input
                   type="text"
                   placeholder="role"
                   className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring mr-2 ease-linear transition-all duration-150"
@@ -134,16 +151,6 @@ export default function CardTable({ color }) {
                 >
                   Add User
                 </button>
-                {/* <button
-                  onClick={() => {
-                    if (selectedUser) {
-                      updateNewUser(newUser, selectedUser._id);
-                    }
-                  }}
-                  className="bg-lightBlue-500 mt-2 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                >
-                  {selectedUser ? "Update User" : "No User Selected"}
-                </button> */}
               </div>
             </div>
           </div>
@@ -207,11 +214,6 @@ export default function CardTable({ color }) {
               {users.map((user, index) => (
                 <tr key={index}>
                   <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-3 text-left flex items-center">
-                    {/* <img
-                      src={require("assets/img/bootstrap.jpg").default}
-                      className="h-12 w-12 bg-white rounded-full border"
-                      alt="..."
-                    /> */}
                     <span
                       className={
                         "ml-3 font-bold " +
@@ -228,21 +230,20 @@ export default function CardTable({ color }) {
                     {user.role}
                   </td>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {user.createdAt}
+                    {new Date(user.createdAt).toLocaleDateString()}
                   </td>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
                     <button
-                      className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                      type="button"
+                  className="bg-red-500 mt-2 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                       onClick={() => deleteUser(user._id)}
                     >
                       Delete
                     </button>
                     {/* <button
-                      className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                      className="text-blue-500 hover:text-blue-700"
                       onClick={() => handleEditUser(user)}
                     >
-                      Edit User
+                      Edit
                     </button> */}
                   </td>
                 </tr>
@@ -256,7 +257,7 @@ export default function CardTable({ color }) {
 }
 
 CardTable.defaultProps = {
-  color: "light",
+  color: "black",
 };
 
 CardTable.propTypes = {

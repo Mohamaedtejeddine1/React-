@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getAllOffres } from "../services/ApiOffres";
-import { useHistory } from "react-router-dom";
 import Navbar from "components/CandidatNav/Nav.js";
 import Footer from "components/Footers/Footer.js";
 
@@ -50,16 +49,13 @@ export default function Landing() {
         <div className="relative pt-16 pb-32 flex content-center items-center justify-center min-h-screen-75">
           <div
             className="absolute top-0 w-full h-full bg-center bg-cover"
-            style={{ 
-            
-         
-  
+            style={{
               backgroundImage:
                 "url('https://img.freepik.com/free-photo/business-job-interview-concept_1421-77.jpg?t=st=1747148285~exp=1747151885~hmac=a4006c5502c5b613ab24ca4c8cee0058be6eb6bc1ff39a25d4f60f7a58907c64&w=1380')",
             }}
           >
-           
- <span className="w-full h-full absolute opacity-50 bg-black"></span>          </div>
+            <span className="w-full h-full absolute opacity-50 bg-black"></span>
+          </div>
 
           <div className="container relative mx-auto">
             <div className="items-center flex flex-wrap">
@@ -132,37 +128,31 @@ export default function Landing() {
                 {filteredOffres.map((offre, index) => (
                   <div key={index} className="w-full md:w-6/12 lg:w-4/12 px-4 mb-8">
                     <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
-                      <div className="relative flex flex-col min-w-2 break-words bg-white w-full mb-8 shadow-lg rounded-lg">
-                        <div className="px-4 py-5 flex-auto">
-                          {/* <div className="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-red-400">
-                        <i className="fas fa-award"></i>
-                      </div> */}
-                          <h6 className="text-xl font-semibold"><b > Titre:</b> {offre.titre}</h6>
-                          <p className="mt-2 mb-4 text-blueGray-500"><b> competance :</b>   {offre.competance}</p>
-                          <p className="mt-2 mb-4 text-blueGray-500"><b>Domaine: </b>{offre.domaine}</p>
-                          <p className="mt-2 text-center  mb-4 text-lightBlue-600">{offre.recrut.email}</p>
+                      <div className="relative flex flex-col min-w-0 break-words bg-white w-full shadow-lg rounded-lg h-full">
+                        <div className="px-4 py-5 flex-auto flex flex-col justify-between h-full">
+                          <div>
+                            <h6 className="text-xl font-semibold"><b>Title:</b> {offre.titre}</h6>
+                            <p className="mt-2 mb-1 text-blueGray-500 truncate"><b>Skills:</b> {offre.competance}</p>
+                            <p className="mt-1 mb-4 text-blueGray-500 overflow-hidden">
+                              <b>Description:</b> {offre.description}
+                            </p>                         
+                               <p className="mt-1 mb-1 text-blueGray-500"><b>Domain:</b> {offre.domaine}</p>
 
-
-
-                          {/* <p className="mt-2 mb-4 text-blueGray-500"><b>competance:</b> {offre.competance}</p>
-                      <p className="mt-2 mb-4 text-blueGray-500"><b>Domaine: </b>{offre.domaine}</p>
-                      <p className="mt-2 mb-4 text-blueGray-500"><b>Departement:</b>{offre.departement}</p> */}
-
-
+                            <p className="mt-0 mb-1 text-blueGray-500"><b>Status:</b> {offre.status}</p>
+                        <b >Posted By: </b>  <p className="mt-0 mb-2 text-lightBlue-600 text-center truncate"> {offre.recrut.email}</p> 
+                          </div>
+                          <Link
+                            to={{
+                              pathname: "/FormCandidat",
+                              state: { selectedOffreId: offre._id },
+                            }}
+                            className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 flex items-center justify-center"
+                          >
+                            <button type="button" className="font-bold">
+                              Apply Now
+                            </button>
+                          </Link>
                         </div>
-                        <Link
-                          to={{
-                            pathname: "/FormCandidat",
-                            state: { selectedOffreId: offre._id },
-
-                          }}
-                          className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 flex items-center justify-center"
-                        >
-                          <button type="button" className="font-bold">
-                            Apply Now
-                          </button>
-                        </Link>
-
                       </div>
                     </div>
                   </div>

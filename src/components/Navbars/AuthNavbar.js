@@ -47,7 +47,7 @@ export default function Navbar() {
 
               <Link
                   to="/auth/login"
-                  className="lg:text-white lg:hover:text-blueGray-200 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
+                  className=" lg:text-white lg:hover:text-blueGray-200 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
                 >
                   Login 
                 </Link>
@@ -57,7 +57,7 @@ export default function Navbar() {
  
       <Link
                   to="/auth/login2"
-                  className="lg:text-white lg:hover:text-blueGray-200 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
+  className="bg-lightBlue-400 px-4 py-2 mx-2 border border-white border-[2px]  rounded-md flex items-center space-x-2 text-xs uppercase font-bold text-white hover:bg-white hover:text-gray-800 transition duration-300 ease-in-out"
                 >
                   Login as Admin
                 </Link>

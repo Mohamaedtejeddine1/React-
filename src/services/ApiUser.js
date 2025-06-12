@@ -16,17 +16,28 @@ export async function getAllUsers() {
  export async function deleteUserById(id) {
      return await axios.delete(`${apiurl}/deleteUserById/${id}`)
 }
-export async function signin(data){
-    return await axios.post('http://localhost:5000/users/login',data)
-    
+export async function signin(data) {
+  return await axios.post('http://localhost:5000/users/login', data, {
+    withCredentials: true,  
+  });
 }
 
 export async function signup(data){
     return await axios.post('http://localhost:5000/users/register',data)
 
 }
-export async function logout () {
-    return await axios.post(`${apiurl}/logout`)
+export async function logout() {
+  const token = localStorage.getItem("token"); // or your token key
+
+  return await axios.post(
+    `${apiurl}/logout`,
+    {}, // no request body
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 }
 export async function createUser(userData) {
     return await axios.post(`${apiurl}/createUser`,userData)

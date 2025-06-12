@@ -3051,12 +3051,13 @@ select {
 }
 /* In your tailwind.css or styles.css */
 /* Custom Green */
-.bg-green-100-custom {
+/* .bg-green-100-custom {
   background-color: #d1f7dc; /* Tailwind's green-100 color */
-}
+
 
 .text-green-100-custom {
-  color: #5f9e56; /* Tailwind's green-100 text color */
+
+  color: forestgreen,rgb(0, 159, 27); /* Tailwind's green-100 text color */
 }
 
 /* Custom Red */

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import {  useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
+import axios from "axios";
 
 export default function Login2() {
   const history = useHistory();
@@ -9,39 +10,54 @@ export default function Login2() {
   const [errors, setErrors] = useState({ email: "", password: "" });
 
   useEffect(() => {
-    const userRole = localStorage.getItem("role");
-    if (userRole === "admin") {
+    const role = localStorage.getItem("role");
+    if (role === "admin") {
       history.push("/admin/tables");
     }
   }, [history]);
 
   const formValidation = () => {
-    let status = true;
+    let valid = true;
     let localErrors = { email: "", password: "" };
 
     if (!email) {
       localErrors.email = "Email required";
-      status = false;
+      valid = false;
     }
     if (!password || password.length < 8) {
       localErrors.password = "Password required (min. 8 characters)";
-      status = false;
+      valid = false;
     }
 
     setErrors(localErrors);
-    return status;
+    return valid;
   };
 
-  const handleSignin = (e) => {
+  const handleSignin = async (e) => {
     e.preventDefault();
-    if (formValidation()) {
-      if (email === "admin@gmail.com" && password === "adminA@128") {
-        toast.success("Admin signed in successfully");
-        localStorage.setItem("role", "admin");
+    if (!formValidation()) return;
+
+    try {
+      // Replace with your real backend URL
+      const res = await axios.post("http://localhost:5000/users/login", {
+        email,
+        password,
+      });
+
+      // Assuming your backend returns something like:
+      // { token: "...", user: { role: "admin", ... } }
+      const { token, user } = res.data;
+
+      if (user.role === "admin") {
+        toast.success("Admin logged in successfully");
+        localStorage.setItem("token", token);
+        localStorage.setItem("role", user.role);
         history.push("/admin/tables");
       } else {
         toast.error("Access denied. Admins only.");
       }
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Login failed");
     }
   };
 
@@ -54,7 +70,9 @@ export default function Login2() {
               <div className="rounded-t mb-0 px-6 py-6">
                 <div className="text-center mb-3">
                   <Toaster />
-                  <h2 className="text-lightBlue-600 text-sm font-bold">Welcome Admin !</h2>
+                  <h2 className="text-lightBlue-600 text-sm font-bold">
+                    Welcome Admin!
+                  </h2>
                 </div>
                 <hr className="mt-6 border-b-1 border-blueGray-300" />
               </div>
@@ -83,7 +101,7 @@ export default function Login2() {
                       </div>
                     )}
                   </div>
-  
+
                   {/* Password Field */}
                   <div className="relative w-full mb-3">
                     <label
@@ -109,8 +127,8 @@ export default function Login2() {
                       </div>
                     )}
                   </div>
-  
-            
+
+                  {/* Submit Button */}
                   <div className="text-center mt-6">
                     <button
                       className="bg-lightBlue-600 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none w-full ease-linear transition-all duration-150"
@@ -118,13 +136,10 @@ export default function Login2() {
                     >
                       Sign In
                     </button>
-                 
-
                   </div>
                 </form>
               </div>
             </div>
-     
           </div>
         </div>
       </div>
